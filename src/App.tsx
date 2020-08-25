@@ -26,12 +26,14 @@ import {
   DebugInstructions,
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
-
 import {createDrawerNavigator} from '@react-navigation/drawer';
 
-import {DrawerParam} from './navigations/drawer';
-import Login from './Login';
-import Projects from './Projects';
+import {Provider} from 'react-redux';
+
+import store from './store';
+import {DrawerParam} from './components/navigations/drawer';
+import Login from './components/Login';
+import Projects from './containers/projects';
 
 declare const global: {HermesInternal: null | {}};
 
@@ -39,12 +41,14 @@ const Drawer = createDrawerNavigator<DrawerParam>();
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <Drawer.Navigator initialRouteName="Projects">
-        <Drawer.Screen name="Projects" component={Projects} />
-        <Drawer.Screen name="Login" component={Login} />
-      </Drawer.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Drawer.Navigator initialRouteName="Projects">
+          <Drawer.Screen name="Projects" component={Projects} />
+          <Drawer.Screen name="Login" component={Login} />
+        </Drawer.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 };
 
