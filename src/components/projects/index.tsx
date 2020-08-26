@@ -6,19 +6,21 @@ import {
   DynamicValue,
   useDynamicValue,
 } from 'react-native-dynamic';
+import {StackScreenProps} from '@react-navigation/stack';
 
 import Actions, {getProjects} from '@/actions/projects';
 import {State as ProjectsState} from '@/reducers/projects';
 import listSeparator from '@/components/atoms/listSeparator';
 import Item from './project';
+import {StackParam} from '@/navigations/stack';
 
-type Props = {
+type Props = StackScreenProps<StackParam, 'Index'> & {
   projects: ProjectsState;
 } & {
   dispatch: ThunkDispatch<any, any, Actions>;
 };
 
-const index: React.FC<Props> = ({dispatch, projects}) => {
+const index: React.FC<Props> = ({dispatch, projects, navigation}) => {
   const inputRef = useRef();
 
   useEffect(() => {
@@ -26,12 +28,19 @@ const index: React.FC<Props> = ({dispatch, projects}) => {
     console.log(projects.projects);
   }, [inputRef]);
 
+  const openLists = (params: {projectID: number; title: string}) => {
+    return navigation.navigate('Lists', {
+      projectID: params.projectID,
+      title: params.title,
+    });
+  };
+
   const styles = useDynamicValue(dynamicStyles);
   return (
     <View style={styles.container}>
       <FlatList
         data={projects.projects}
-        renderItem={({item}) => <Item project={item}></Item>}
+        renderItem={({item}) => <Item open={openLists} project={item}></Item>}
         keyExtractor={(item) => item.id.toString()}
         ItemSeparatorComponent={listSeparator}></FlatList>
     </View>
