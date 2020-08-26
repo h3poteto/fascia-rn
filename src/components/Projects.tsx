@@ -5,33 +5,46 @@ import {ThunkDispatch} from 'redux-thunk';
 import {DynamicValue, useDynamicValue} from 'react-native-dynamic';
 
 import {DrawerParam} from '@/navigations/drawer';
+import {StackParam} from '@/navigations/stack';
 import {RootStore} from '@/reducers';
 import Actions from '@/actions/projects';
 import Index from './projects/index';
+import Lists from './lists/index';
 
 type Props = DrawerScreenProps<DrawerParam, 'Projects'> &
   RootStore & {
     dispatch: ThunkDispatch<any, any, Actions>;
   };
 
-const Stack = createStackNavigator<Props>();
+const Stack = createStackNavigator<StackParam>();
 
-const backgroundColor = new DynamicValue('#ffffff', '#000000');
-const titleColor = new DynamicValue('#0a0a0a', '#f0f0f0');
+const dynamicBackgroundColor = new DynamicValue('#ffffff', '#000000');
+const dynamicTitleColor = new DynamicValue('#0a0a0a', '#f0f0f0');
 
-const Projects: React.FC<Props> = ({dispatch, projects}) => {
+const Projects: React.FC<Props> = ({dispatch, projects, lists}) => {
+  const backgroundColor = useDynamicValue(dynamicBackgroundColor);
+  const titleColor = useDynamicValue(dynamicTitleColor);
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="Index">
       <Stack.Screen
         name="Index"
         options={{
           title: 'Projects',
-          headerStyle: {backgroundColor: useDynamicValue(backgroundColor)},
-          headerTintColor: useDynamicValue(titleColor),
+          headerStyle: {backgroundColor: backgroundColor},
+          headerTintColor: titleColor,
         }}>
         {(props) => (
           <Index {...props} dispatch={dispatch} projects={projects} />
         )}
+      </Stack.Screen>
+      <Stack.Screen
+        name="Lists"
+        options={({route}) => ({
+          title: route.params.title,
+          headerStyle: {backgroundColor: backgroundColor},
+          headerTintColor: titleColor,
+        })}>
+        {(props) => <Lists {...props} dispatch={dispatch} lists={lists} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

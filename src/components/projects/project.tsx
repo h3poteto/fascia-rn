@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Image} from 'react-native';
+import {View, Text, Image, TouchableOpacity} from 'react-native';
 import {
   DynamicStyleSheet,
   DynamicValue,
@@ -10,12 +10,17 @@ import {Project} from '@/entities/project';
 
 type Props = {
   project: Project;
+  open: Function;
 };
 
-const item: React.FC<Props> = ({project}) => {
+const item: React.FC<Props> = ({project, open}) => {
+  const onPress = () => {
+    open({projectID: project.id, title: project.title});
+  };
+
   const styles = useDynamicValue(dynamicStyles);
   return (
-    <View style={styles.item}>
+    <TouchableOpacity style={styles.item} onPress={onPress}>
       <View style={styles.wrapper}>
         <View style={styles.image}></View>
         <Text style={styles.title}>{project.title}</Text>
@@ -23,7 +28,7 @@ const item: React.FC<Props> = ({project}) => {
       <Image
         style={styles.icon}
         source={require('~assets/icons/60x60.png')}></Image>
-    </View>
+    </TouchableOpacity>
   );
 };
 
