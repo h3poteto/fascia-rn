@@ -25,7 +25,6 @@ const index: React.FC<Props> = ({dispatch, projects, navigation}) => {
 
   useEffect(() => {
     dispatch(getProjects());
-    console.log(projects.projects);
   }, [inputRef]);
 
   const openLists = (params: {projectID: number; title: string}) => {

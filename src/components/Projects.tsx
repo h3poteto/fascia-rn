@@ -21,7 +21,7 @@ const Stack = createStackNavigator<StackParam>();
 const dynamicBackgroundColor = new DynamicValue('#ffffff', '#000000');
 const dynamicTitleColor = new DynamicValue('#0a0a0a', '#f0f0f0');
 
-const Projects: React.FC<Props> = ({dispatch, projects}) => {
+const Projects: React.FC<Props> = ({dispatch, projects, lists}) => {
   const backgroundColor = useDynamicValue(dynamicBackgroundColor);
   const titleColor = useDynamicValue(dynamicTitleColor);
   return (
@@ -44,7 +44,7 @@ const Projects: React.FC<Props> = ({dispatch, projects}) => {
           headerStyle: {backgroundColor: backgroundColor},
           headerTintColor: titleColor,
         })}>
-        {(props) => <Lists {...props} />}
+        {(props) => <Lists {...props} dispatch={dispatch} lists={lists} />}
       </Stack.Screen>
     </Stack.Navigator>
   );
