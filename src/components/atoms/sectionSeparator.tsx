@@ -6,7 +6,11 @@ import {
   useDynamicValue,
 } from 'react-native-dynamic';
 
-const listSeparator: React.FC<{}> = () => {
+type Props = {
+  highlighted: boolean;
+};
+
+const sectionSeparator: React.FC<Props> = () => {
   const styles = useDynamicValue(dynamicStyles);
   return <View style={styles.separator} />;
 };
@@ -16,8 +20,8 @@ const dynamicStyles = new DynamicStyleSheet({
     height: 1,
     width: '100%',
     backgroundColor: new DynamicValue('#DED0DE', '#4E404E'),
-    marginLeft: 20,
+    marginLeft: 0,
   },
 });
 
-export default listSeparator;
+export default sectionSeparator;

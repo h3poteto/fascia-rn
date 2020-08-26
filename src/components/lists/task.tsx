@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {TouchableOpacity, View, Text} from 'react-native';
 import {
   DynamicStyleSheet,
   DynamicValue,
@@ -7,17 +7,26 @@ import {
 } from 'react-native-dynamic';
 
 import {List} from '@/entities/list';
+import {Task} from '@/entities/task';
 
 type Props = {
   list: List;
+  task: Task;
 };
 
-const item: React.FC<Props> = ({list}) => {
+const task: React.FC<Props> = ({list, task}) => {
   const styles = useDynamicValue(dynamicStyles);
   return (
-    <View style={styles.item}>
-      <Text style={styles.title}>{list.title}</Text>
-    </View>
+    <TouchableOpacity style={styles.item}>
+      <View
+        style={{
+          backgroundColor: `#${list.color}`,
+          width: 24,
+          marginRight: 12,
+          borderRadius: 20,
+        }}></View>
+      <Text style={styles.title}>{task.title}</Text>
+    </TouchableOpacity>
   );
 };
 
@@ -26,7 +35,6 @@ const dynamicStyles = new DynamicStyleSheet({
     paddingTop: 12,
     paddingBottom: 12,
     paddingLeft: 24,
-    marginTop: 4,
     backgroundColor: new DynamicValue('#ffffff', '#101010'),
     flexDirection: 'row',
   },
@@ -36,4 +44,4 @@ const dynamicStyles = new DynamicStyleSheet({
   },
 });
 
-export default item;
+export default task;
