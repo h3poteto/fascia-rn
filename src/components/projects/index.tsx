@@ -7,9 +7,9 @@ import {
   useDynamicValue,
 } from 'react-native-dynamic';
 
-import Actions, {getProjects} from '../../actions/projects';
-import {State as ProjectsState} from '../../reducers/projects';
-import listSeparator from '../atoms/listSeparator';
+import Actions, {getProjects} from '@/actions/projects';
+import {State as ProjectsState} from '@/reducers/projects';
+import listSeparator from '@/components/atoms/listSeparator';
 import Item from './project';
 
 type Props = {

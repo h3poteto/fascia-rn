@@ -6,7 +6,7 @@ import {
   useDynamicValue,
 } from 'react-native-dynamic';
 
-import {Project} from '../../entities/project';
+import {Project} from '@/entities/project';
 
 type Props = {
   project: Project;

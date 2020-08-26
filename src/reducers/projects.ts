@@ -3,8 +3,8 @@ import {Reducer} from 'redux';
 import Actions, {
   RequestGetProjects,
   ReceiveGetProjects,
-} from '../actions/projects';
-import {Project} from '../entities/project';
+} from '@/actions/projects';
+import {Project} from '@/entities/project';
 
 export type State = {
   loading: boolean;

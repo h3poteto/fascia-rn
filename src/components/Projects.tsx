@@ -4,9 +4,9 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {ThunkDispatch} from 'redux-thunk';
 import {DynamicValue, useDynamicValue} from 'react-native-dynamic';
 
-import {DrawerParam} from '../navigations/drawer';
-import {RootStore} from '../reducers';
-import Actions from '../actions/projects';
+import {DrawerParam} from '@/navigations/drawer';
+import {RootStore} from '@/reducers';
+import Actions from '@/actions/projects';
 import Index from './projects/index';
 
 type Props = DrawerScreenProps<DrawerParam, 'Projects'> &

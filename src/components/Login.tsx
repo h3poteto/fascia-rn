@@ -5,7 +5,7 @@ import {
   DrawerScreenProps,
   DrawerNavigationProp,
 } from '@react-navigation/drawer';
-import {DrawerParam} from './navigations/drawer';
+import {DrawerParam} from '@/navigations/drawer';
 
 type Props = DrawerScreenProps<DrawerParam, 'Login'>;
 

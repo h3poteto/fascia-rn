@@ -1,4 +1,4 @@
-import {RootStore} from '../reducers';
+import {RootStore} from '@/reducers';
 
 const mapStateToProps = (state: RootStore): RootStore => {
   return state;
