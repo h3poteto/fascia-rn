@@ -31,7 +31,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import {Provider} from 'react-redux';
 
 import store from './store';
-import {DrawerParam} from './components/navigations/drawer';
+import {DrawerParam} from './navigations/drawer';
 import Login from './components/Login';
 import Projects from './containers/projects';
 
