@@ -1,7 +1,6 @@
 import React from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import {Text, View, TextInput, Button, Alert, ScrollView} from 'react-native';
-import {TouchableOpacity} from 'react-native';
 import {
   DynamicStyleSheet,
   DynamicValue,
@@ -12,7 +11,7 @@ import {useForm, Controller} from 'react-hook-form';
 
 import {TasksParam} from '@/navigations/tasks';
 import ShowActions from '@/actions/projects/tasks/show';
-import EditActions from '@/actions/projects/tasks/edit';
+import EditActions, {updateTask} from '@/actions/projects/tasks/edit';
 import {Task} from '@/entities/task';
 
 type Props = StackScreenProps<TasksParam, 'Edit'> & {
@@ -26,10 +25,17 @@ type FormData = {
   description: string;
 };
 
-const edit: React.FC<Props> = ({task}) => {
+const edit: React.FC<Props> = ({task, dispatch}) => {
   const {control, handleSubmit, errors} = useForm<FormData>();
   const onSubmit = handleSubmit(({title, description}) => {
-    console.log(title, description);
+    if (task) {
+      dispatch(
+        updateTask(task.project_id, task.list_id, task.id, {
+          title,
+          description,
+        }),
+      );
+    }
   });
 
   const styles = useDynamicValue(dynamicStyles);
