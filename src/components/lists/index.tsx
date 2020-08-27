@@ -18,6 +18,7 @@ import sectionSeparator from '@/components/atoms/sectionSeparator';
 import ListItem from './list';
 import TaskItem from './task';
 import {Task} from '@/entities/task';
+import {List} from '@/entities/list';
 
 type Props = StackScreenProps<ListsParam & HomeParam, 'Index'> & {
   lists: ListsState;
@@ -65,8 +66,14 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
     data: l.tasks.concat([newTask]),
   }));
 
-  const openNew = () => {
-    console.log('new');
+  const openNew = (list: List) => {
+    navigation.navigate('Tasks', {
+      screen: 'New',
+      params: {
+        projectID: list.project_id,
+        listID: list.id,
+      },
+    });
   };
 
   const styles = useDynamicValue(dynamicStyles);
@@ -80,7 +87,9 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
         renderItem={({item, section}) => {
           if (item.id === -1) {
             return (
-              <TouchableOpacity style={styles.new} onPress={openNew}>
+              <TouchableOpacity
+                style={styles.new}
+                onPress={() => openNew(section.list)}>
                 <Icon name="plus" size={25} style={styles.plus} />
               </TouchableOpacity>
             );
