@@ -47,6 +47,7 @@ const dynamicStyles = new DynamicStyleSheet({
     paddingTop: 12,
     paddingBottom: 12,
     marginBottom: 8,
+    marginTop: 8,
     fontSize: 20,
     color: new DynamicValue('#000000', '#dcdcdc'),
     backgroundColor: new DynamicValue('#ffffff', '#101010'),

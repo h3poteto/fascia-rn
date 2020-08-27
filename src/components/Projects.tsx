@@ -1,7 +1,6 @@
 import React from 'react';
 import {TouchableOpacity} from 'react-native';
-import {DrawerScreenProps} from '@react-navigation/drawer';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator, StackScreenProps} from '@react-navigation/stack';
 import {ThunkDispatch} from 'redux-thunk';
 import {
   DynamicValue,
@@ -10,7 +9,7 @@ import {
 } from 'react-native-dynamic';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import {DrawerParam} from '@/navigations/drawer';
+import {HomeParam} from '@/navigations/home';
 import {ProjectsParam} from '@/navigations/projects';
 import {RootStore} from '@/reducers';
 import Actions from '@/actions/projects';
@@ -18,7 +17,7 @@ import Index from './projects/index';
 import Lists from './lists/index';
 import Task from './tasks/show';
 
-type Props = DrawerScreenProps<DrawerParam, 'Projects'> &
+type Props = StackScreenProps<HomeParam, 'Projects'> &
   RootStore & {
     dispatch: ThunkDispatch<any, any, Actions>;
   };
@@ -28,13 +27,25 @@ const Stack = createStackNavigator<ProjectsParam>();
 const dynamicBackgroundColor = new DynamicValue('#ffffff', '#000000');
 const dynamicTitleColor = new DynamicValue('#0a0a0a', '#f0f0f0');
 
-const Projects: React.FC<Props> = ({dispatch, projects, lists, task}) => {
+const Projects: React.FC<Props> = ({
+  navigation,
+  dispatch,
+  projects,
+  lists,
+  task,
+}) => {
   const backgroundColor = useDynamicValue(dynamicBackgroundColor);
   const titleColor = useDynamicValue(dynamicTitleColor);
   const editTaskButtonStyles = useDynamicValue(editTaskButtonDynamicStyles);
 
+  const editTask = () => {
+    return navigation.navigate('Modals', {
+      screen: 'EditTask',
+    });
+  };
+
   return (
-    <Stack.Navigator initialRouteName="Index">
+    <Stack.Navigator initialRouteName="Index" mode="card">
       <Stack.Screen
         name="Index"
         options={{
@@ -62,7 +73,9 @@ const Projects: React.FC<Props> = ({dispatch, projects, lists, task}) => {
           headerStyle: {backgroundColor: backgroundColor},
           headerTintColor: titleColor,
           headerRight: () => (
-            <TouchableOpacity style={editTaskButtonStyles.button}>
+            <TouchableOpacity
+              style={editTaskButtonStyles.button}
+              onPress={editTask}>
               <Icon name="edit" size={25} style={editTaskButtonStyles.icon} />
             </TouchableOpacity>
           ),

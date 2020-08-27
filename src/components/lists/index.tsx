@@ -61,7 +61,6 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
         renderSectionHeader={({section: {list}}) => (
           <ListItem list={list}></ListItem>
         )}></SectionList>
-      <Text>{projectID}</Text>
     </View>
   );
 };
