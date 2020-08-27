@@ -1,6 +1,7 @@
 export type ServerTask = {
   ID: number;
   ListID: number;
+  ProjectID: number;
   UserID: number;
   IssueNumber: number;
   Title: string;
@@ -12,6 +13,7 @@ export type ServerTask = {
 export type Task = {
   id: number;
   list_id: number;
+  project_id: number;
   user_id: number;
   issue_number: number;
   title: string;
@@ -23,6 +25,7 @@ export type Task = {
 export const converter = (t: ServerTask): Task => ({
   id: t.ID,
   list_id: t.ListID,
+  project_id: t.ProjectID,
   user_id: t.UserID,
   issue_number: t.IssueNumber,
   title: t.Title,

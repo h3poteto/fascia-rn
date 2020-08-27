@@ -12,14 +12,15 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import {HomeParam} from '@/navigations/home';
 import {TasksParam} from '@/navigations/tasks';
 import {State as TasksState} from '@/reducers/tasks';
-import Actions from '@/actions/projects/tasks/show';
+import ShowActions from '@/actions/projects/tasks/show';
+import EditActions from '@/actions/projects/tasks/edit';
 import Show from './tasks/show';
 import Edit from './tasks/edit';
 
 type Props = StackScreenProps<HomeParam, 'Tasks'> & {
   state: TasksState;
 } & {
-  dispatch: ThunkDispatch<any, any, Actions>;
+  dispatch: ThunkDispatch<any, any, ShowActions & EditActions>;
 };
 
 const TasksStack = createStackNavigator<TasksParam>();
@@ -37,6 +38,7 @@ const Tasks: React.FC<Props> = ({navigation, dispatch, state}) => {
     return navigation.navigate('Tasks', {
       screen: 'Edit',
       params: {
+        projectID: state.task?.project_id,
         listID: state.task?.list_id,
         taskID: state.task?.id,
         title: state.task?.title,
@@ -64,12 +66,13 @@ const Tasks: React.FC<Props> = ({navigation, dispatch, state}) => {
       </TasksStack.Screen>
       <TasksStack.Screen
         name="Edit"
-        component={Edit}
         options={{
           headerBackImage: () => (
             <Icon name="close" size={25} style={headerStyles.close} />
           ),
-        }}></TasksStack.Screen>
+        }}>
+        {(props) => <Edit {...props} dispatch={dispatch} task={state.task} />}
+      </TasksStack.Screen>
     </TasksStack.Navigator>
   );
 };

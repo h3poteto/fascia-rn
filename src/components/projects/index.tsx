@@ -13,8 +13,9 @@ import {State as ProjectsState} from '@/reducers/projects';
 import listSeparator from '@/components/atoms/listSeparator';
 import Item from './project';
 import {ProjectsParam} from '@/navigations/projects';
+import {HomeParam} from '@/navigations/home';
 
-type Props = StackScreenProps<ProjectsParam, 'Index'> & {
+type Props = StackScreenProps<ProjectsParam & HomeParam, 'Index'> & {
   projects: ProjectsState;
 } & {
   dispatch: ThunkDispatch<any, any, Actions>;
