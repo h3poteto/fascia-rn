@@ -12,12 +12,21 @@ import {Task} from '@/entities/task';
 type Props = {
   list: List;
   task: Task;
+  open: Function;
 };
 
-const task: React.FC<Props> = ({list, task}) => {
+const task: React.FC<Props> = ({list, task, open}) => {
+  const onPress = () => {
+    open({
+      projectID: list.project_id,
+      listID: list.id,
+      taskID: task.id,
+      title: task.title,
+    });
+  };
   const styles = useDynamicValue(dynamicStyles);
   return (
-    <TouchableOpacity style={styles.item}>
+    <TouchableOpacity style={styles.item} onPress={onPress}>
       <View
         style={{
           backgroundColor: `#${list.color}`,
