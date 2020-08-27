@@ -1,4 +1,4 @@
 export type DrawerParam = {
-  Projects: undefined;
+  Home: undefined;
   Login: undefined;
 };

@@ -8,11 +8,11 @@ import {View, Text, ScrollView} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {ThunkDispatch} from 'redux-thunk';
 
-import {ProjectsParam} from '@/navigations/projects';
+import {TasksParam} from '@/navigations/tasks';
 import Actions, {getTask} from '@/actions/projects/tasks/show';
 import {Task} from '@/entities/task';
 
-type Props = StackScreenProps<ProjectsParam, 'Task'> & {
+type Props = StackScreenProps<TasksParam, 'Show'> & {
   dispatch: ThunkDispatch<any, any, Actions>;
   task: Task | null;
 };
@@ -47,6 +47,7 @@ const dynamicStyles = new DynamicStyleSheet({
     paddingTop: 12,
     paddingBottom: 12,
     marginBottom: 8,
+    marginTop: 8,
     fontSize: 20,
     color: new DynamicValue('#000000', '#dcdcdc'),
     backgroundColor: new DynamicValue('#ffffff', '#101010'),

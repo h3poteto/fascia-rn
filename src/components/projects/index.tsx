@@ -13,8 +13,9 @@ import {State as ProjectsState} from '@/reducers/projects';
 import listSeparator from '@/components/atoms/listSeparator';
 import Item from './project';
 import {ProjectsParam} from '@/navigations/projects';
+import {HomeParam} from '@/navigations/home';
 
-type Props = StackScreenProps<ProjectsParam, 'Index'> & {
+type Props = StackScreenProps<ProjectsParam & HomeParam, 'Index'> & {
   projects: ProjectsState;
 } & {
   dispatch: ThunkDispatch<any, any, Actions>;
@@ -29,8 +30,11 @@ const index: React.FC<Props> = ({dispatch, projects, navigation}) => {
 
   const openLists = (params: {projectID: number; title: string}) => {
     return navigation.navigate('Lists', {
-      projectID: params.projectID,
-      title: params.title,
+      screen: 'Index',
+      params: {
+        projectID: params.projectID,
+        title: params.title,
+      },
     });
   };
 
