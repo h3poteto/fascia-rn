@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {SectionList, View, Text} from 'react-native';
+import {SectionList, View} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {ThunkDispatch} from 'redux-thunk';
 import {
@@ -8,7 +8,8 @@ import {
   useDynamicValue,
 } from 'react-native-dynamic';
 
-import {ProjectsParam} from '@/navigations/projects';
+import {ListsParam} from '@/navigations/lists';
+import {HomeParam} from '@/navigations/home';
 import Actions, {getLists} from '@/actions/projects/lists';
 import {State as ListsState} from '@/reducers/lists';
 import listSeparator from '@/components/atoms/listSeparator';
@@ -16,7 +17,7 @@ import sectionSeparator from '@/components/atoms/sectionSeparator';
 import ListItem from './list';
 import TaskItem from './task';
 
-type Props = StackScreenProps<ProjectsParam, 'Lists'> & {
+type Props = StackScreenProps<ListsParam & HomeParam, 'Index'> & {
   lists: ListsState;
   dispatch: ThunkDispatch<any, any, Actions>;
 };
@@ -34,11 +35,14 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
     taskID: number;
     title: string;
   }) => {
-    return navigation.navigate('Task', {
-      projectID: params.projectID,
-      listID: params.listID,
-      taskID: params.taskID,
-      title: params.title,
+    return navigation.navigate('Tasks', {
+      screen: 'Show',
+      params: {
+        projectID: params.projectID,
+        listID: params.listID,
+        taskID: params.taskID,
+        title: params.title,
+      },
     });
   };
 

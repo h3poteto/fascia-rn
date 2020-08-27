@@ -1,4 +1,5 @@
 export type HomeParam = {
-  Projects: undefined;
-  Modals: {screen: string} | undefined;
+  Projects: {screen: string; params: any} | undefined;
+  Lists: {screen: string; params: any} | undefined;
+  Tasks: {screen: string; params: any} | undefined;
 };

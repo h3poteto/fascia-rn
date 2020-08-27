@@ -5,7 +5,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {DrawerParam} from '@/navigations/drawer';
 import {HomeParam} from '@/navigations/home';
 import Projects from '@/containers/projects';
-import Modals from '@/components/Modals';
+import Lists from '@/containers/lists';
+import Tasks from '@/containers/tasks';
 
 type Props = DrawerScreenProps<DrawerParam, 'Home'>;
 
@@ -18,7 +19,8 @@ const Home: React.FC<Props> = () => {
       mode="modal"
       screenOptions={{headerShown: false}}>
       <RootStack.Screen name="Projects" component={Projects}></RootStack.Screen>
-      <RootStack.Screen name="Modals" component={Modals}></RootStack.Screen>
+      <RootStack.Screen name="Lists" component={Lists}></RootStack.Screen>
+      <RootStack.Screen name="Tasks" component={Tasks}></RootStack.Screen>
     </RootStack.Navigator>
   );
 };

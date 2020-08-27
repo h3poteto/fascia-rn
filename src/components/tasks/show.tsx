@@ -8,11 +8,11 @@ import {View, Text, ScrollView} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {ThunkDispatch} from 'redux-thunk';
 
-import {ProjectsParam} from '@/navigations/projects';
+import {TasksParam} from '@/navigations/tasks';
 import Actions, {getTask} from '@/actions/projects/tasks/show';
 import {Task} from '@/entities/task';
 
-type Props = StackScreenProps<ProjectsParam, 'Task'> & {
+type Props = StackScreenProps<TasksParam, 'Show'> & {
   dispatch: ThunkDispatch<any, any, Actions>;
   task: Task | null;
 };

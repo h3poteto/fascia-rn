@@ -7,9 +7,9 @@ import {
   useDynamicValue,
 } from 'react-native-dynamic';
 
-import {ModalsParam} from '@/navigations/modals';
+import {TasksParam} from '@/navigations/tasks';
 
-type Props = StackScreenProps<ModalsParam, 'EditTask'>;
+type Props = StackScreenProps<TasksParam, 'Edit'>;
 
 const edit: React.FC<Props> = () => {
   const styles = useDynamicValue(dynamicStyles);

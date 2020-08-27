@@ -29,8 +29,11 @@ const index: React.FC<Props> = ({dispatch, projects, navigation}) => {
 
   const openLists = (params: {projectID: number; title: string}) => {
     return navigation.navigate('Lists', {
-      projectID: params.projectID,
-      title: params.title,
+      screen: 'Index',
+      params: {
+        projectID: params.projectID,
+        title: params.title,
+      },
     });
   };
 
