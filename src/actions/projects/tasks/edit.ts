@@ -16,6 +16,7 @@ export const receiveUpdateTask = (task: Task) => ({
 });
 
 export const updateTask = (
+  navigation: any,
   projectID: number,
   listID: number,
   taskID: number,
@@ -32,7 +33,7 @@ export const updateTask = (
         const data = converter(res.data);
         dispatch(receiveUpdateTask(data));
         dispatch(getLists(projectID));
-        // TODO: ここでnavigation.backできたら最高なのだが
+        navigation.goBack();
       });
   };
 };

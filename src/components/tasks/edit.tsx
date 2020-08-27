@@ -25,12 +25,12 @@ type FormData = {
   description: string;
 };
 
-const edit: React.FC<Props> = ({task, dispatch}) => {
+const edit: React.FC<Props> = ({navigation, task, dispatch}) => {
   const {control, handleSubmit, errors} = useForm<FormData>();
   const onSubmit = handleSubmit(({title, description}) => {
     if (task) {
       dispatch(
-        updateTask(task.project_id, task.list_id, task.id, {
+        updateTask(navigation, task.project_id, task.list_id, task.id, {
           title,
           description,
         }),
