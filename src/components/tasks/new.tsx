@@ -10,12 +10,10 @@ import {
 import {useForm, Controller} from 'react-hook-form';
 
 import {TasksParam} from '@/navigations/tasks';
-import {List} from '@/entities/list';
+import NewActions, {createTask} from '@/actions/projects/tasks/new';
 
 type Props = StackScreenProps<TasksParam, 'New'> & {
-  list: List | null;
-} & {
-  dispatch: ThunkDispatch<any, any, any>;
+  dispatch: ThunkDispatch<any, any, NewActions>;
 };
 
 type FormData = {
@@ -23,12 +21,16 @@ type FormData = {
   description: string;
 };
 
-const New: React.FC<Props> = ({list}) => {
+const New: React.FC<Props> = ({dispatch, navigation, route}) => {
   const {control, handleSubmit, errors} = useForm<FormData>();
+  const {projectID, listID} = route.params;
   const onSubmit = handleSubmit(({title, description}) => {
-    if (list) {
-      console.log(title, description);
-    }
+    dispatch(
+      createTask(navigation, projectID, listID, {
+        title,
+        description,
+      }),
+    );
   });
 
   const styles = useDynamicValue(dynamicStyles);
@@ -45,6 +47,7 @@ const New: React.FC<Props> = ({list}) => {
               onBlur={onBlur}
               onChangeText={(value) => onChange(value)}
               value={value}
+              autoFocus={true}
             />
           )}
           name="title"
@@ -63,7 +66,6 @@ const New: React.FC<Props> = ({list}) => {
               onBlur={onBlur}
               onChangeText={(value) => onChange(value)}
               value={value}
-              autoFocus={true}
             />
           )}
           name="description"
