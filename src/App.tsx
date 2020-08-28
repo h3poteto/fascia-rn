@@ -17,7 +17,7 @@ import {Provider} from 'react-redux';
 import store from './store';
 import {DrawerParam} from './navigations/drawer';
 import Login from './components/Login';
-import Home from './components/Home';
+import Home from './containers/home';
 
 declare const global: {HermesInternal: null | {}};
 
