@@ -11,7 +11,10 @@ import {useForm, Controller} from 'react-hook-form';
 import DropdownAlert from 'react-native-dropdownalert';
 
 import {TasksParam} from '@/navigations/tasks';
-import NewActions, {createTask} from '@/actions/projects/tasks/new';
+import NewActions, {
+  createTask,
+  clearCreateError,
+} from '@/actions/projects/tasks/new';
 
 type Props = StackScreenProps<TasksParam, 'New'> & {
   dispatch: ThunkDispatch<any, any, NewActions>;
@@ -40,6 +43,7 @@ const New: React.FC<Props> = ({dispatch, navigation, route, error}) => {
   useEffect(() => {
     if (error) {
       dropdown.current?.alertWithType('error', 'Error', error.toString());
+      dispatch(clearCreateError());
     }
   }, [error]);
 

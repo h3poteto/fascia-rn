@@ -6,11 +6,13 @@ import EditActions, {
   RequestUpdateTask,
   ReceiveUpdateTask,
   ErrorUpdateTask,
+  ClearUpdateError,
 } from '@/actions/projects/tasks/edit';
 import NewActions, {
   RequestCreateTask,
   ReceiveCreateTask,
   ErrorCreateTask,
+  ClearCreateError,
 } from '@/actions/projects/tasks/new';
 import {Task} from '@/entities/task';
 import {Reducer} from 'redux';
@@ -61,6 +63,12 @@ const reducer: Reducer<State, ShowActions | NewActions | EditActions> = (
       return {
         ...state,
         errors: action.payload,
+      };
+    case ClearCreateError:
+    case ClearUpdateError:
+      return {
+        ...state,
+        errors: null,
       };
     default:
       return state;

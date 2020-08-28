@@ -6,6 +6,7 @@ import {Task, ServerTask, converter} from '@/entities/task';
 export const RequestCreateTask = 'RequestCreateTask' as const;
 export const ReceiveCreateTask = 'ReceiveCreateTask' as const;
 export const ErrorCreateTask = 'ErrorCreateTask' as const;
+export const ClearCreateError = 'ClearCreateError' as const;
 
 export const requestCreateTask = () => ({
   type: RequestCreateTask,
@@ -19,6 +20,10 @@ export const receiveCreateTask = (task: Task) => ({
 export const errorCreateTask = (err: Error) => ({
   type: ErrorCreateTask,
   payload: err,
+});
+
+export const clearCreateError = () => ({
+  type: ClearCreateError,
 });
 
 export const createTask = (
@@ -47,7 +52,10 @@ export const createTask = (
 };
 
 type Actions = ReturnType<
-  typeof requestCreateTask | typeof receiveCreateTask | typeof errorCreateTask
+  | typeof requestCreateTask
+  | typeof receiveCreateTask
+  | typeof errorCreateTask
+  | typeof clearCreateError
 >;
 
 export default Actions;

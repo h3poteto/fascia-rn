@@ -12,14 +12,17 @@ import DropdownAlert from 'react-native-dropdownalert';
 
 import {TasksParam} from '@/navigations/tasks';
 import ShowActions from '@/actions/projects/tasks/show';
-import EditActions, {updateTask} from '@/actions/projects/tasks/edit';
+import EditActions, {
+  updateTask,
+  clearUpdateError,
+} from '@/actions/projects/tasks/edit';
 import {Task} from '@/entities/task';
 
 type Props = StackScreenProps<TasksParam, 'Edit'> & {
   task: Task | null;
   error: Error | null;
 } & {
-  dispatch: ThunkDispatch<any, any, ShowActions & EditActions>;
+  dispatch: ThunkDispatch<any, any, ShowActions | EditActions>;
 };
 
 type FormData = {
@@ -45,6 +48,7 @@ const edit: React.FC<Props> = ({navigation, task, dispatch, error}) => {
   useEffect(() => {
     if (error) {
       dropdown.current?.alertWithType('error', 'Error', error.toString());
+      dispatch(clearUpdateError());
     }
   }, [error]);
 

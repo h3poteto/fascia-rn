@@ -6,6 +6,7 @@ import {Task, ServerTask, converter} from '@/entities/task';
 export const RequestUpdateTask = 'RequestUpdateTask' as const;
 export const ReceiveUpdateTask = 'ReceiveUpdateTask' as const;
 export const ErrorUpdateTask = 'ErrorUpdateTask' as const;
+export const ClearUpdateError = 'ClearUpdateError' as const;
 
 export const requestUpdateTask = () => ({
   type: RequestUpdateTask,
@@ -19,6 +20,10 @@ export const receiveUpdateTask = (task: Task) => ({
 export const errorUpdateTask = (err: Error) => ({
   type: ErrorUpdateTask,
   payload: err,
+});
+
+export const clearUpdateError = () => ({
+  type: ClearUpdateError,
 });
 
 export const updateTask = (
@@ -48,7 +53,10 @@ export const updateTask = (
 };
 
 type Actions = ReturnType<
-  typeof requestUpdateTask | typeof receiveUpdateTask | typeof errorUpdateTask
+  | typeof requestUpdateTask
+  | typeof receiveUpdateTask
+  | typeof errorUpdateTask
+  | typeof clearUpdateError
 >;
 
 export default Actions;
