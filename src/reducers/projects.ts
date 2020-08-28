@@ -7,13 +7,13 @@ import Actions, {
 import {Project} from '@/entities/project';
 
 export type State = {
-  refreshing: boolean;
+  loading: boolean;
   errors: Error | null;
   projects: Array<Project>;
 };
 
 const initState: State = {
-  refreshing: false,
+  loading: false,
   errors: null,
   projects: [],
 };
@@ -26,12 +26,12 @@ const reducer: Reducer<State, Actions> = (
     case RequestGetProjects:
       return {
         ...state,
-        refreshing: true,
+        loading: true,
       };
     case ReceiveGetProjects:
       return {
         ...state,
-        refreshing: false,
+        loading: false,
         projects: action.payload,
       };
     default:

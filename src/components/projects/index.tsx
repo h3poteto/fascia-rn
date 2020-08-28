@@ -51,10 +51,7 @@ const index: React.FC<Props> = ({dispatch, projects, navigation}) => {
         keyExtractor={(item) => item.id.toString()}
         ItemSeparatorComponent={listSeparator}
         refreshControl={
-          <RefreshControl
-            refreshing={projects.refreshing}
-            onRefresh={onRefresh}
-          />
+          <RefreshControl refreshing={projects.loading} onRefresh={onRefresh} />
         }></FlatList>
     </View>
   );
