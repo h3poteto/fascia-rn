@@ -1,6 +1,6 @@
 import React from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
-import {Text, View, TextInput, Button, Alert, ScrollView} from 'react-native';
+import {Text, View, TextInput, Button, ScrollView} from 'react-native';
 import {
   DynamicStyleSheet,
   DynamicValue,
