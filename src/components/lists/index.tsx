@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {SectionList, View} from 'react-native';
+import {SectionList, View, TouchableOpacity} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {ThunkDispatch} from 'redux-thunk';
 import {
@@ -7,6 +7,7 @@ import {
   DynamicValue,
   useDynamicValue,
 } from 'react-native-dynamic';
+import Icon from 'react-native-vector-icons/AntDesign';
 
 import {ListsParam} from '@/navigations/lists';
 import {HomeParam} from '@/navigations/home';
@@ -16,6 +17,8 @@ import listSeparator from '@/components/atoms/listSeparator';
 import sectionSeparator from '@/components/atoms/sectionSeparator';
 import ListItem from './list';
 import TaskItem from './task';
+import {Task} from '@/entities/task';
+import {List} from '@/entities/list';
 
 type Props = StackScreenProps<ListsParam & HomeParam, 'Index'> & {
   lists: ListsState;
@@ -46,10 +49,32 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
     });
   };
 
+  const newTask: Task = {
+    id: -1,
+    list_id: -1,
+    project_id: -1,
+    user_id: -1,
+    issue_number: -1,
+    title: 'new',
+    description: '',
+    html_url: '',
+    pull_request: false,
+  };
+
   const renderData = lists.lists.map((l) => ({
     list: l,
-    data: l.tasks,
+    data: l.tasks.concat([newTask]),
   }));
+
+  const openNew = (list: List) => {
+    navigation.navigate('Tasks', {
+      screen: 'New',
+      params: {
+        projectID: list.project_id,
+        listID: list.id,
+      },
+    });
+  };
 
   const styles = useDynamicValue(dynamicStyles);
   return (
@@ -59,9 +84,19 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
         keyExtractor={(item) => item.id.toString()}
         ItemSeparatorComponent={listSeparator}
         SectionSeparatorComponent={sectionSeparator}
-        renderItem={({item, section}) => (
-          <TaskItem task={item} list={section.list} open={openTask} />
-        )}
+        renderItem={({item, section}) => {
+          if (item.id === -1) {
+            return (
+              <TouchableOpacity
+                style={styles.new}
+                onPress={() => openNew(section.list)}>
+                <Icon name="plus" size={25} style={styles.plus} />
+              </TouchableOpacity>
+            );
+          } else {
+            return <TaskItem task={item} list={section.list} open={openTask} />;
+          }
+        }}
         renderSectionHeader={({section: {list}}) => (
           <ListItem list={list}></ListItem>
         )}></SectionList>
@@ -73,6 +108,21 @@ const dynamicStyles = new DynamicStyleSheet({
   container: {
     flex: 1,
     backgroundColor: new DynamicValue('#f0f0f0', '#000000'),
+  },
+  new: {
+    width: '100%',
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: new DynamicValue('#ffffff', '#101010'),
+  },
+  plus: {
+    marginTop: 0,
+    marginBottom: 0,
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    paddingTop: 12,
+    paddingBottom: 12,
+    paddingLeft: 24,
   },
 });
 

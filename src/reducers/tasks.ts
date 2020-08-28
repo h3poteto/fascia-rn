@@ -6,6 +6,10 @@ import EditActions, {
   RequestUpdateTask,
   ReceiveUpdateTask,
 } from '@/actions/projects/tasks/edit';
+import NewActions, {
+  RequestCreateTask,
+  ReceiveCreateTask,
+} from '@/actions/projects/tasks/new';
 import {Task} from '@/entities/task';
 import {Reducer} from 'redux';
 
@@ -17,15 +21,17 @@ const initState: State = {
   task: null,
 };
 
-const reducer: Reducer<State, ShowActions | EditActions> = (
+const reducer: Reducer<State, ShowActions | NewActions | EditActions> = (
   state: State = initState,
-  action: ShowActions | EditActions,
+  action: ShowActions | NewActions | EditActions,
 ): State => {
   switch (action.type) {
     case RequestGetTask:
+    case RequestCreateTask:
     case RequestUpdateTask:
       return state;
     case ReceiveGetTask:
+    case ReceiveCreateTask:
     case ReceiveUpdateTask:
       return {
         ...state,

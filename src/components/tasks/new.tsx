@@ -1,23 +1,19 @@
 import React from 'react';
+import {View, ScrollView, Text, TextInput, Button} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
-import {Text, View, TextInput, Button, ScrollView} from 'react-native';
+import {ThunkDispatch} from 'redux-thunk';
 import {
   DynamicStyleSheet,
   DynamicValue,
   useDynamicValue,
 } from 'react-native-dynamic';
-import {ThunkDispatch} from 'redux-thunk';
 import {useForm, Controller} from 'react-hook-form';
 
 import {TasksParam} from '@/navigations/tasks';
-import ShowActions from '@/actions/projects/tasks/show';
-import EditActions, {updateTask} from '@/actions/projects/tasks/edit';
-import {Task} from '@/entities/task';
+import NewActions, {createTask} from '@/actions/projects/tasks/new';
 
-type Props = StackScreenProps<TasksParam, 'Edit'> & {
-  task: Task | null;
-} & {
-  dispatch: ThunkDispatch<any, any, ShowActions & EditActions>;
+type Props = StackScreenProps<TasksParam, 'New'> & {
+  dispatch: ThunkDispatch<any, any, NewActions>;
 };
 
 type FormData = {
@@ -25,17 +21,16 @@ type FormData = {
   description: string;
 };
 
-const edit: React.FC<Props> = ({navigation, task, dispatch}) => {
+const New: React.FC<Props> = ({dispatch, navigation, route}) => {
   const {control, handleSubmit, errors} = useForm<FormData>();
+  const {projectID, listID} = route.params;
   const onSubmit = handleSubmit(({title, description}) => {
-    if (task) {
-      dispatch(
-        updateTask(navigation, task.project_id, task.list_id, task.id, {
-          title,
-          description,
-        }),
-      );
-    }
+    dispatch(
+      createTask(navigation, projectID, listID, {
+        title,
+        description,
+      }),
+    );
   });
 
   const styles = useDynamicValue(dynamicStyles);
@@ -52,11 +47,12 @@ const edit: React.FC<Props> = ({navigation, task, dispatch}) => {
               onBlur={onBlur}
               onChangeText={(value) => onChange(value)}
               value={value}
+              autoFocus={true}
             />
           )}
           name="title"
           rules={{required: true}}
-          defaultValue={task?.title}
+          defaultValue=""
         />
         {errors.title && <Text style={styles.error}>Title is required.</Text>}
 
@@ -70,11 +66,10 @@ const edit: React.FC<Props> = ({navigation, task, dispatch}) => {
               onBlur={onBlur}
               onChangeText={(value) => onChange(value)}
               value={value}
-              autoFocus={true}
             />
           )}
           name="description"
-          defaultValue={task?.description}
+          defaultValue=""
         />
       </ScrollView>
       <View style={styles.submit}>
@@ -130,4 +125,4 @@ const dynamicStyles = new DynamicStyleSheet({
   },
 });
 
-export default edit;
+export default New;

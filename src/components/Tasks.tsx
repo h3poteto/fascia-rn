@@ -16,6 +16,7 @@ import ShowActions from '@/actions/projects/tasks/show';
 import EditActions from '@/actions/projects/tasks/edit';
 import Show from './tasks/show';
 import Edit from './tasks/edit';
+import New from './tasks/new';
 
 type Props = StackScreenProps<HomeParam, 'Tasks'> & {
   state: TasksState;
@@ -63,6 +64,15 @@ const Tasks: React.FC<Props> = ({navigation, dispatch, state}) => {
           ),
         })}>
         {(props) => <Show {...props} dispatch={dispatch} task={state.task} />}
+      </TasksStack.Screen>
+      <TasksStack.Screen
+        name="New"
+        options={{
+          headerBackImage: () => (
+            <Icon name="close" size={25} style={headerStyles.close} />
+          ),
+        }}>
+        {(props) => <New {...props} dispatch={dispatch} />}
       </TasksStack.Screen>
       <TasksStack.Screen
         name="Edit"
