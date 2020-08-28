@@ -14,10 +14,12 @@ import {Task} from '@/entities/task';
 import {Reducer} from 'redux';
 
 export type State = {
+  loading: boolean;
   task: Task | null;
 };
 
 const initState: State = {
+  loading: false,
   task: null,
 };
 
@@ -27,10 +29,19 @@ const reducer: Reducer<State, ShowActions | NewActions | EditActions> = (
 ): State => {
   switch (action.type) {
     case RequestGetTask:
+      return {
+        ...state,
+        loading: true,
+      };
     case RequestCreateTask:
     case RequestUpdateTask:
       return state;
     case ReceiveGetTask:
+      return {
+        ...state,
+        loading: false,
+        task: action.payload,
+      };
     case ReceiveCreateTask:
     case ReceiveUpdateTask:
       return {
