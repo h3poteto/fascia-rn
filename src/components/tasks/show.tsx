@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useRef, useEffect} from 'react';
 import {
   DynamicStyleSheet,
   DynamicValue,
@@ -7,9 +7,10 @@ import {
 import {View, Text, ScrollView, RefreshControl} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {ThunkDispatch} from 'redux-thunk';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import {TasksParam} from '@/navigations/tasks';
-import Actions, {getTask} from '@/actions/projects/tasks/show';
+import Actions, {getTask, clearGetError} from '@/actions/projects/tasks/show';
 import {State as TasksState} from '@/reducers/tasks';
 
 type Props = StackScreenProps<TasksParam, 'Show'> & {
@@ -26,6 +27,19 @@ const task: React.FC<Props> = ({route, dispatch, tasks}) => {
     dispatch(getTask(projectID, listID, taskID));
   }, [projectID, listID, taskID]);
 
+  let dropdown = useRef<DropdownAlert | null>();
+
+  useEffect(() => {
+    if (tasks.errors) {
+      dropdown.current?.alertWithType(
+        'error',
+        'Error',
+        tasks.errors.toString(),
+      );
+      dispatch(clearGetError());
+    }
+  }, [tasks.errors]);
+
   const onRefresh = () => {
     dispatch(getTask(projectID, listID, taskID));
   };
@@ -40,6 +54,7 @@ const task: React.FC<Props> = ({route, dispatch, tasks}) => {
         <Text style={styles.title}>{tasks.task?.title}</Text>
         <Text style={styles.description}>{tasks.task?.description}</Text>
       </ScrollView>
+      <DropdownAlert ref={(ref) => (dropdown.current = ref)} />
     </View>
   );
 };

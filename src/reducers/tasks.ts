@@ -1,6 +1,8 @@
 import ShowActions, {
   RequestGetTask,
   ReceiveGetTask,
+  ErrorGetTask,
+  ClearGetError,
 } from '@/actions/projects/tasks/show.ts';
 import EditActions, {
   RequestUpdateTask,
@@ -58,12 +60,14 @@ const reducer: Reducer<State, ShowActions | NewActions | EditActions> = (
         errors: null,
         task: action.payload,
       };
+    case ErrorGetTask:
     case ErrorUpdateTask:
     case ErrorCreateTask:
       return {
         ...state,
         errors: action.payload,
       };
+    case ClearGetError:
     case ClearCreateError:
     case ClearUpdateError:
       return {
