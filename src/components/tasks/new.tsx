@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {View, ScrollView, Text, TextInput, Button} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {ThunkDispatch} from 'redux-thunk';
@@ -23,8 +23,6 @@ type FormData = {
   description: string;
 };
 
-let dropdown: DropdownAlert | null = null;
-
 const New: React.FC<Props> = ({dispatch, navigation, route, error}) => {
   const {control, handleSubmit, errors} = useForm<FormData>();
   const {projectID, listID} = route.params;
@@ -37,8 +35,10 @@ const New: React.FC<Props> = ({dispatch, navigation, route, error}) => {
     );
   });
 
-  if (error && dropdown) {
-    dropdown.alertWithType('error', 'Error', error.toString());
+  let dropdown = useRef<DropdownAlert | null>();
+
+  if (error) {
+    dropdown.current?.alertWithType('error', 'Error', error.toString());
   }
 
   const styles = useDynamicValue(dynamicStyles);
@@ -83,7 +83,7 @@ const New: React.FC<Props> = ({dispatch, navigation, route, error}) => {
       <View style={styles.submit}>
         <Button title="Submit" color="#0069d9" onPress={onSubmit} />
       </View>
-      <DropdownAlert ref={(ref) => (dropdown = ref)} />
+      <DropdownAlert ref={(ref) => (dropdown.current = ref)} />
     </View>
   );
 };

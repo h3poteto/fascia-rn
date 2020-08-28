@@ -5,6 +5,7 @@ import ShowActions, {
 import EditActions, {
   RequestUpdateTask,
   ReceiveUpdateTask,
+  ErrorUpdateTask,
 } from '@/actions/projects/tasks/edit';
 import NewActions, {
   RequestCreateTask,
@@ -55,6 +56,7 @@ const reducer: Reducer<State, ShowActions | NewActions | EditActions> = (
         errors: null,
         task: action.payload,
       };
+    case ErrorUpdateTask:
     case ErrorCreateTask:
       return {
         ...state,
