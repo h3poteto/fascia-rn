@@ -1,5 +1,10 @@
 import React, {useEffect} from 'react';
-import {SectionList, View, TouchableOpacity} from 'react-native';
+import {
+  SectionList,
+  View,
+  TouchableOpacity,
+  RefreshControl,
+} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {ThunkDispatch} from 'redux-thunk';
 import {
@@ -31,6 +36,10 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
   useEffect(() => {
     dispatch(getLists(projectID));
   }, [projectID]);
+
+  const onRefresh = () => {
+    dispatch(getLists(projectID));
+  };
 
   const openTask = (params: {
     projectID: number;
@@ -99,7 +108,10 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
         }}
         renderSectionHeader={({section: {list}}) => (
           <ListItem list={list}></ListItem>
-        )}></SectionList>
+        )}
+        refreshControl={
+          <RefreshControl refreshing={lists.loading} onRefresh={onRefresh} />
+        }></SectionList>
     </View>
   );
 };

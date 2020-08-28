@@ -63,7 +63,7 @@ const Tasks: React.FC<Props> = ({navigation, dispatch, state}) => {
             </TouchableOpacity>
           ),
         })}>
-        {(props) => <Show {...props} dispatch={dispatch} task={state.task} />}
+        {(props) => <Show {...props} dispatch={dispatch} tasks={state} />}
       </TasksStack.Screen>
       <TasksStack.Screen
         name="New"

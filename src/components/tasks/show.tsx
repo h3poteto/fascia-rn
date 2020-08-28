@@ -4,20 +4,20 @@ import {
   DynamicValue,
   useDynamicValue,
 } from 'react-native-dynamic';
-import {View, Text, ScrollView} from 'react-native';
+import {View, Text, ScrollView, RefreshControl} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {ThunkDispatch} from 'redux-thunk';
 
 import {TasksParam} from '@/navigations/tasks';
 import Actions, {getTask} from '@/actions/projects/tasks/show';
-import {Task} from '@/entities/task';
+import {State as TasksState} from '@/reducers/tasks';
 
 type Props = StackScreenProps<TasksParam, 'Show'> & {
   dispatch: ThunkDispatch<any, any, Actions>;
-  task: Task | null;
+  tasks: TasksState;
 };
 
-const task: React.FC<Props> = ({route, dispatch, task}) => {
+const task: React.FC<Props> = ({route, dispatch, tasks}) => {
   const {projectID} = route.params;
   const {listID} = route.params;
   const {taskID} = route.params;
@@ -26,12 +26,19 @@ const task: React.FC<Props> = ({route, dispatch, task}) => {
     dispatch(getTask(projectID, listID, taskID));
   }, [projectID, listID, taskID]);
 
+  const onRefresh = () => {
+    dispatch(getTask(projectID, listID, taskID));
+  };
+
   const styles = useDynamicValue(dynamicStyles);
   return (
     <View style={styles.container}>
-      <ScrollView>
-        <Text style={styles.title}>{task?.title}</Text>
-        <Text style={styles.description}>{task?.description}</Text>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={tasks.loading} onRefresh={onRefresh} />
+        }>
+        <Text style={styles.title}>{tasks.task?.title}</Text>
+        <Text style={styles.description}>{tasks.task?.description}</Text>
       </ScrollView>
     </View>
   );
