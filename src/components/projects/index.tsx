@@ -1,5 +1,5 @@
 import React, {useRef, useEffect} from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList, View, RefreshControl} from 'react-native';
 import {ThunkDispatch} from 'redux-thunk';
 import {
   DynamicStyleSheet,
@@ -28,6 +28,10 @@ const index: React.FC<Props> = ({dispatch, projects, navigation}) => {
     dispatch(getProjects());
   }, [inputRef]);
 
+  const onRefresh = () => {
+    dispatch(getProjects());
+  };
+
   const openLists = (params: {projectID: number; title: string}) => {
     return navigation.navigate('Lists', {
       screen: 'Index',
@@ -45,7 +49,13 @@ const index: React.FC<Props> = ({dispatch, projects, navigation}) => {
         data={projects.projects}
         renderItem={({item}) => <Item open={openLists} project={item}></Item>}
         keyExtractor={(item) => item.id.toString()}
-        ItemSeparatorComponent={listSeparator}></FlatList>
+        ItemSeparatorComponent={listSeparator}
+        refreshControl={
+          <RefreshControl
+            refreshing={projects.refreshing}
+            onRefresh={onRefresh}
+          />
+        }></FlatList>
     </View>
   );
 };
