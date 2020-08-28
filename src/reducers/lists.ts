@@ -3,6 +3,8 @@ import {Reducer} from 'redux';
 import Actions, {
   RequestGetLists,
   ReceiveGetLists,
+  ErrorGetLists,
+  ClearGetError,
 } from '@/actions/projects/lists';
 import {List} from '@/entities/list';
 
@@ -34,7 +36,19 @@ const reducer: Reducer<State, Actions> = (
       return {
         ...state,
         loading: false,
+        errors: null,
         lists: action.payload,
+      };
+    case ErrorGetLists:
+      return {
+        ...state,
+        loading: false,
+        errors: action.payload,
+      };
+    case ClearGetError:
+      return {
+        ...state,
+        errors: null,
       };
     default:
       return state;

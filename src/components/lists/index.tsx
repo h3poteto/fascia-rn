@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useRef, useEffect} from 'react';
 import {
   SectionList,
   View,
@@ -13,10 +13,11 @@ import {
   useDynamicValue,
 } from 'react-native-dynamic';
 import Icon from 'react-native-vector-icons/AntDesign';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import {ListsParam} from '@/navigations/lists';
 import {HomeParam} from '@/navigations/home';
-import Actions, {getLists} from '@/actions/projects/lists';
+import Actions, {getLists, clearGetError} from '@/actions/projects/lists';
 import {State as ListsState} from '@/reducers/lists';
 import listSeparator from '@/components/atoms/listSeparator';
 import sectionSeparator from '@/components/atoms/sectionSeparator';
@@ -36,6 +37,19 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
   useEffect(() => {
     dispatch(getLists(projectID));
   }, [projectID]);
+
+  let dropdown = useRef<DropdownAlert | null>();
+
+  useEffect(() => {
+    if (lists.errors) {
+      dropdown.current?.alertWithType(
+        'error',
+        'Error',
+        lists.errors.toString(),
+      );
+      dispatch(clearGetError());
+    }
+  }, [lists.errors]);
 
   const onRefresh = () => {
     dispatch(getLists(projectID));
@@ -112,6 +126,7 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
         refreshControl={
           <RefreshControl refreshing={lists.loading} onRefresh={onRefresh} />
         }></SectionList>
+      <DropdownAlert ref={(ref) => (dropdown.current = ref)} />
     </View>
   );
 };

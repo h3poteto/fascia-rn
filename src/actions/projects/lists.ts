@@ -6,6 +6,8 @@ import {List, Lists, converter} from '@/entities/list';
 export const RequestGetLists = 'RequestGetLists' as const;
 export const ReceiveGetLists = 'ReceiveGetLists' as const;
 export const ReceiveNoneList = 'ReceiveNoneList' as const;
+export const ErrorGetLists = 'ErrorGetLists' as const;
+export const ClearGetError = 'ClearGetError' as const;
 
 export const requestGetLists = () => ({
   type: RequestGetLists,
@@ -21,6 +23,15 @@ export const receiveNoneList = (list: List) => ({
   payload: list,
 });
 
+export const errorGetLists = (err: Error) => ({
+  type: ErrorGetLists,
+  payload: err,
+});
+
+export const clearGetError = () => ({
+  type: ClearGetError,
+});
+
 export const getLists = (projectID: number) => {
   return (dispatch: Dispatch<Action>) => {
     dispatch(requestGetLists());
@@ -31,12 +42,19 @@ export const getLists = (projectID: number) => {
         dispatch(receiveGetLists(data));
         const none = converter(res.data.NoneList);
         dispatch(receiveNoneList(none));
+      })
+      .catch((err) => {
+        dispatch(errorGetLists(err));
       });
   };
 };
 
 type Actions = ReturnType<
-  typeof requestGetLists | typeof receiveGetLists | typeof receiveNoneList
+  | typeof requestGetLists
+  | typeof receiveGetLists
+  | typeof receiveNoneList
+  | typeof errorGetLists
+  | typeof clearGetError
 >;
 
 export default Actions;
