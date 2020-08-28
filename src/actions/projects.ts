@@ -4,6 +4,8 @@ import {ServerProject, Project, converter} from '@/entities/project';
 
 export const RequestGetProjects = 'RequestGetProjects' as const;
 export const ReceiveGetProjects = 'ReceiveGetProjects' as const;
+export const ErrorGetProjects = 'ErrorGetProjects' as const;
+export const ClearGetError = 'ClearGetError' as const;
 
 export const requestGetProjects = () => ({
   type: RequestGetProjects,
@@ -16,6 +18,15 @@ export const receiveGetProjects = (projects: Array<Project>) => {
   };
 };
 
+export const errorGetProjects = (err: Error) => ({
+  type: ErrorGetProjects,
+  payload: err,
+});
+
+export const clearGetError = () => ({
+  type: ClearGetError,
+});
+
 export const getProjects = () => {
   return (dispatch: Dispatch<Action>) => {
     dispatch(requestGetProjects());
@@ -24,12 +35,18 @@ export const getProjects = () => {
       .then((res) => {
         const data: Array<Project> = res.data.map((p) => converter(p));
         dispatch(receiveGetProjects(data));
+      })
+      .catch((err) => {
+        dispatch(errorGetProjects(err));
       });
   };
 };
 
 type Actions = ReturnType<
-  typeof requestGetProjects | typeof receiveGetProjects
+  | typeof requestGetProjects
+  | typeof receiveGetProjects
+  | typeof errorGetProjects
+  | typeof clearGetError
 >;
 
 export default Actions;

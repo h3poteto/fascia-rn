@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef, useEffect} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import {Text, View, TextInput, Button, ScrollView} from 'react-native';
 import {
@@ -8,16 +8,21 @@ import {
 } from 'react-native-dynamic';
 import {ThunkDispatch} from 'redux-thunk';
 import {useForm, Controller} from 'react-hook-form';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import {TasksParam} from '@/navigations/tasks';
 import ShowActions from '@/actions/projects/tasks/show';
-import EditActions, {updateTask} from '@/actions/projects/tasks/edit';
+import EditActions, {
+  updateTask,
+  clearUpdateError,
+} from '@/actions/projects/tasks/edit';
 import {Task} from '@/entities/task';
 
 type Props = StackScreenProps<TasksParam, 'Edit'> & {
   task: Task | null;
+  error: Error | null;
 } & {
-  dispatch: ThunkDispatch<any, any, ShowActions & EditActions>;
+  dispatch: ThunkDispatch<any, any, ShowActions | EditActions>;
 };
 
 type FormData = {
@@ -25,7 +30,7 @@ type FormData = {
   description: string;
 };
 
-const edit: React.FC<Props> = ({navigation, task, dispatch}) => {
+const edit: React.FC<Props> = ({navigation, task, dispatch, error}) => {
   const {control, handleSubmit, errors} = useForm<FormData>();
   const onSubmit = handleSubmit(({title, description}) => {
     if (task) {
@@ -37,6 +42,15 @@ const edit: React.FC<Props> = ({navigation, task, dispatch}) => {
       );
     }
   });
+
+  let dropdown = useRef<DropdownAlert | null>();
+
+  useEffect(() => {
+    if (error) {
+      dropdown.current?.alertWithType('error', 'Error', error.toString());
+      dispatch(clearUpdateError());
+    }
+  }, [error]);
 
   const styles = useDynamicValue(dynamicStyles);
 
@@ -80,6 +94,7 @@ const edit: React.FC<Props> = ({navigation, task, dispatch}) => {
       <View style={styles.submit}>
         <Button title="Submit" color="#0069d9" onPress={onSubmit} />
       </View>
+      <DropdownAlert ref={(ref) => (dropdown.current = ref)} />
     </View>
   );
 };

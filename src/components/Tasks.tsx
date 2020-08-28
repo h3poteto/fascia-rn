@@ -72,7 +72,7 @@ const Tasks: React.FC<Props> = ({navigation, dispatch, state}) => {
             <Icon name="close" size={25} style={headerStyles.close} />
           ),
         }}>
-        {(props) => <New {...props} dispatch={dispatch} />}
+        {(props) => <New {...props} dispatch={dispatch} error={state.errors} />}
       </TasksStack.Screen>
       <TasksStack.Screen
         name="Edit"
@@ -81,7 +81,14 @@ const Tasks: React.FC<Props> = ({navigation, dispatch, state}) => {
             <Icon name="close" size={25} style={headerStyles.close} />
           ),
         }}>
-        {(props) => <Edit {...props} dispatch={dispatch} task={state.task} />}
+        {(props) => (
+          <Edit
+            {...props}
+            dispatch={dispatch}
+            task={state.task}
+            error={state.errors}
+          />
+        )}
       </TasksStack.Screen>
     </TasksStack.Navigator>
   );

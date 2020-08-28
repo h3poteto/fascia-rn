@@ -1,25 +1,33 @@
 import ShowActions, {
   RequestGetTask,
   ReceiveGetTask,
+  ErrorGetTask,
+  ClearGetError,
 } from '@/actions/projects/tasks/show.ts';
 import EditActions, {
   RequestUpdateTask,
   ReceiveUpdateTask,
+  ErrorUpdateTask,
+  ClearUpdateError,
 } from '@/actions/projects/tasks/edit';
 import NewActions, {
   RequestCreateTask,
   ReceiveCreateTask,
+  ErrorCreateTask,
+  ClearCreateError,
 } from '@/actions/projects/tasks/new';
 import {Task} from '@/entities/task';
 import {Reducer} from 'redux';
 
 export type State = {
   loading: boolean;
+  errors: Error | null;
   task: Task | null;
 };
 
 const initState: State = {
   loading: false,
+  errors: null,
   task: null,
 };
 
@@ -35,7 +43,10 @@ const reducer: Reducer<State, ShowActions | NewActions | EditActions> = (
       };
     case RequestCreateTask:
     case RequestUpdateTask:
-      return state;
+      return {
+        ...state,
+        errors: null,
+      };
     case ReceiveGetTask:
       return {
         ...state,
@@ -46,7 +57,22 @@ const reducer: Reducer<State, ShowActions | NewActions | EditActions> = (
     case ReceiveUpdateTask:
       return {
         ...state,
+        errors: null,
         task: action.payload,
+      };
+    case ErrorGetTask:
+    case ErrorUpdateTask:
+    case ErrorCreateTask:
+      return {
+        ...state,
+        errors: action.payload,
+      };
+    case ClearGetError:
+    case ClearCreateError:
+    case ClearUpdateError:
+      return {
+        ...state,
+        errors: null,
       };
     default:
       return state;

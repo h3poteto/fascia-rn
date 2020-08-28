@@ -5,6 +5,8 @@ import {Task, ServerTask, converter} from '@/entities/task';
 
 export const RequestGetTask = 'RequestGetTask' as const;
 export const ReceiveGetTask = 'ReceiveGetTask' as const;
+export const ErrorGetTask = 'ErrorGetTask' as const;
+export const ClearGetError = 'ClearGetError' as const;
 
 export const requestGetTask = () => ({
   type: RequestGetTask,
@@ -13,6 +15,15 @@ export const requestGetTask = () => ({
 export const receiveGetTask = (task: Task) => ({
   type: ReceiveGetTask,
   payload: task,
+});
+
+export const errorGetTask = (err: Error) => ({
+  type: ErrorGetTask,
+  payload: err,
+});
+
+export const clearGetError = () => ({
+  type: ClearGetError,
 });
 
 export const getTask = (projectID: number, listID: number, taskID: number) => {
@@ -25,10 +36,18 @@ export const getTask = (projectID: number, listID: number, taskID: number) => {
       .then((res) => {
         const data = converter(res.data);
         dispatch(receiveGetTask(data));
+      })
+      .catch((err) => {
+        dispatch(errorGetTask(err));
       });
   };
 };
 
-type Actions = ReturnType<typeof requestGetTask | typeof receiveGetTask>;
+type Actions = ReturnType<
+  | typeof requestGetTask
+  | typeof receiveGetTask
+  | typeof errorGetTask
+  | typeof clearGetError
+>;
 
 export default Actions;

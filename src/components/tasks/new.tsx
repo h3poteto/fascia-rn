@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef, useEffect} from 'react';
 import {View, ScrollView, Text, TextInput, Button} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {ThunkDispatch} from 'redux-thunk';
@@ -8,12 +8,17 @@ import {
   useDynamicValue,
 } from 'react-native-dynamic';
 import {useForm, Controller} from 'react-hook-form';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import {TasksParam} from '@/navigations/tasks';
-import NewActions, {createTask} from '@/actions/projects/tasks/new';
+import NewActions, {
+  createTask,
+  clearCreateError,
+} from '@/actions/projects/tasks/new';
 
 type Props = StackScreenProps<TasksParam, 'New'> & {
   dispatch: ThunkDispatch<any, any, NewActions>;
+  error: Error | null;
 };
 
 type FormData = {
@@ -21,7 +26,7 @@ type FormData = {
   description: string;
 };
 
-const New: React.FC<Props> = ({dispatch, navigation, route}) => {
+const New: React.FC<Props> = ({dispatch, navigation, route, error}) => {
   const {control, handleSubmit, errors} = useForm<FormData>();
   const {projectID, listID} = route.params;
   const onSubmit = handleSubmit(({title, description}) => {
@@ -32,6 +37,15 @@ const New: React.FC<Props> = ({dispatch, navigation, route}) => {
       }),
     );
   });
+
+  let dropdown = useRef<DropdownAlert | null>();
+
+  useEffect(() => {
+    if (error) {
+      dropdown.current?.alertWithType('error', 'Error', error.toString());
+      dispatch(clearCreateError());
+    }
+  }, [error]);
 
   const styles = useDynamicValue(dynamicStyles);
 
@@ -75,6 +89,7 @@ const New: React.FC<Props> = ({dispatch, navigation, route}) => {
       <View style={styles.submit}>
         <Button title="Submit" color="#0069d9" onPress={onSubmit} />
       </View>
+      <DropdownAlert ref={(ref) => (dropdown.current = ref)} />
     </View>
   );
 };

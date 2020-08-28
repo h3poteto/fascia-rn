@@ -7,8 +7,9 @@ import {
   useDynamicValue,
 } from 'react-native-dynamic';
 import {StackScreenProps} from '@react-navigation/stack';
+import DropdownAlert from 'react-native-dropdownalert';
 
-import Actions, {getProjects} from '@/actions/projects';
+import Actions, {getProjects, clearGetError} from '@/actions/projects';
 import {State as ProjectsState} from '@/reducers/projects';
 import listSeparator from '@/components/atoms/listSeparator';
 import Item from './project';
@@ -27,6 +28,19 @@ const index: React.FC<Props> = ({dispatch, projects, navigation}) => {
   useEffect(() => {
     dispatch(getProjects());
   }, [inputRef]);
+
+  let dropdown = useRef<DropdownAlert | null>();
+
+  useEffect(() => {
+    if (projects.errors) {
+      dropdown.current?.alertWithType(
+        'error',
+        'Error',
+        projects.errors.toString(),
+      );
+      dispatch(clearGetError());
+    }
+  }, [projects.errors]);
 
   const onRefresh = () => {
     dispatch(getProjects());
@@ -53,6 +67,7 @@ const index: React.FC<Props> = ({dispatch, projects, navigation}) => {
         refreshControl={
           <RefreshControl refreshing={projects.loading} onRefresh={onRefresh} />
         }></FlatList>
+      <DropdownAlert ref={(ref) => (dropdown.current = ref)} />
     </View>
   );
 };
