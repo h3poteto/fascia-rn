@@ -29,6 +29,14 @@ const index: React.FC<Props> = ({dispatch, projects, navigation}) => {
     dispatch(getProjects(navigation));
   }, [inputRef]);
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      dispatch(getProjects(navigation));
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
   let dropdown = useRef<DropdownAlert | null>();
 
   useEffect(() => {
