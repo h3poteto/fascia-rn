@@ -32,7 +32,7 @@ export const clearGetError = () => ({
   type: ClearGetError,
 });
 
-export const getLists = (projectID: number) => {
+export const getLists = (navigation: any, projectID: number) => {
   return (dispatch: Dispatch<Action>) => {
     dispatch(requestGetLists());
     axios
@@ -44,7 +44,15 @@ export const getLists = (projectID: number) => {
         dispatch(receiveNoneList(none));
       })
       .catch((err) => {
-        dispatch(errorGetLists(err));
+        switch (err.response.status) {
+          case 401:
+            dispatch(clearGetError());
+            navigation.navigate('Login');
+            return;
+          default:
+            dispatch(errorGetLists(err));
+            return;
+        }
       });
   };
 };

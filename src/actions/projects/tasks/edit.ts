@@ -43,7 +43,7 @@ export const updateTask = (
       .then((res) => {
         const data = converter(res.data);
         dispatch(receiveUpdateTask(data));
-        dispatch(getLists(projectID));
+        dispatch(getLists(navigation, projectID));
         navigation.goBack();
       })
       .catch((err) => {

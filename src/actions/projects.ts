@@ -27,7 +27,7 @@ export const clearGetError = () => ({
   type: ClearGetError,
 });
 
-export const getProjects = () => {
+export const getProjects = (navigation: any) => {
   return (dispatch: Dispatch<Action>) => {
     dispatch(requestGetProjects());
     axios
@@ -37,7 +37,15 @@ export const getProjects = () => {
         dispatch(receiveGetProjects(data));
       })
       .catch((err) => {
-        dispatch(errorGetProjects(err));
+        switch (err.response.status) {
+          case 401:
+            dispatch(clearGetError());
+            navigation.navigate('Login');
+            return;
+          default:
+            dispatch(errorGetProjects(err));
+            return;
+        }
       });
   };
 };
