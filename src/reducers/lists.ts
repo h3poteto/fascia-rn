@@ -48,6 +48,7 @@ const reducer: Reducer<State, Actions> = (
     case ClearGetError:
       return {
         ...state,
+        loading: false,
         errors: null,
       };
     default:

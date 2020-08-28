@@ -18,13 +18,13 @@ type Props = StackScreenProps<TasksParam, 'Show'> & {
   tasks: TasksState;
 };
 
-const task: React.FC<Props> = ({route, dispatch, tasks}) => {
+const task: React.FC<Props> = ({route, dispatch, tasks, navigation}) => {
   const {projectID} = route.params;
   const {listID} = route.params;
   const {taskID} = route.params;
 
   useEffect(() => {
-    dispatch(getTask(projectID, listID, taskID));
+    dispatch(getTask(navigation, projectID, listID, taskID));
   }, [projectID, listID, taskID]);
 
   let dropdown = useRef<DropdownAlert | null>();
@@ -41,7 +41,7 @@ const task: React.FC<Props> = ({route, dispatch, tasks}) => {
   }, [tasks.errors]);
 
   const onRefresh = () => {
-    dispatch(getTask(projectID, listID, taskID));
+    dispatch(getTask(navigation, projectID, listID, taskID));
   };
 
   const styles = useDynamicValue(dynamicStyles);

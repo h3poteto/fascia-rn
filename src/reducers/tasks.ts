@@ -72,6 +72,7 @@ const reducer: Reducer<State, ShowActions | NewActions | EditActions> = (
     case ClearUpdateError:
       return {
         ...state,
+        loading: false,
         errors: null,
       };
     default:

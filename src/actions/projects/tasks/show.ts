@@ -26,7 +26,12 @@ export const clearGetError = () => ({
   type: ClearGetError,
 });
 
-export const getTask = (projectID: number, listID: number, taskID: number) => {
+export const getTask = (
+  navigation: any,
+  projectID: number,
+  listID: number,
+  taskID: number,
+) => {
   return (dispatch: Dispatch<Action>) => {
     dispatch(requestGetTask());
     axios
@@ -38,7 +43,15 @@ export const getTask = (projectID: number, listID: number, taskID: number) => {
         dispatch(receiveGetTask(data));
       })
       .catch((err) => {
-        dispatch(errorGetTask(err));
+        switch (err.response.status) {
+          case 401:
+            dispatch(clearGetError());
+            navigation.navigate('Login');
+            return;
+          default:
+            dispatch(errorGetTask(err));
+            return;
+        }
       });
   };
 };

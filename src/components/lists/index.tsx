@@ -35,7 +35,7 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
   const {projectID} = route.params;
 
   useEffect(() => {
-    dispatch(getLists(projectID));
+    dispatch(getLists(navigation, projectID));
   }, [projectID]);
 
   let dropdown = useRef<DropdownAlert | null>();
@@ -52,7 +52,7 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
   }, [lists.errors]);
 
   const onRefresh = () => {
-    dispatch(getLists(projectID));
+    dispatch(getLists(navigation, projectID));
   };
 
   const openTask = (params: {
