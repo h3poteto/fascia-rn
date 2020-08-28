@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useEffect} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
 import {Text, View, TextInput, Button, ScrollView} from 'react-native';
 import {
@@ -42,9 +42,11 @@ const edit: React.FC<Props> = ({navigation, task, dispatch, error}) => {
 
   let dropdown = useRef<DropdownAlert | null>();
 
-  if (error) {
-    dropdown.current?.alertWithType('error', 'Error', error.toString());
-  }
+  useEffect(() => {
+    if (error) {
+      dropdown.current?.alertWithType('error', 'Error', error.toString());
+    }
+  }, [error]);
 
   const styles = useDynamicValue(dynamicStyles);
 

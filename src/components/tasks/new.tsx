@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useEffect} from 'react';
 import {View, ScrollView, Text, TextInput, Button} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {ThunkDispatch} from 'redux-thunk';
@@ -37,9 +37,11 @@ const New: React.FC<Props> = ({dispatch, navigation, route, error}) => {
 
   let dropdown = useRef<DropdownAlert | null>();
 
-  if (error) {
-    dropdown.current?.alertWithType('error', 'Error', error.toString());
-  }
+  useEffect(() => {
+    if (error) {
+      dropdown.current?.alertWithType('error', 'Error', error.toString());
+    }
+  }, [error]);
 
   const styles = useDynamicValue(dynamicStyles);
 
