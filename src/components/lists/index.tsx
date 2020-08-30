@@ -14,6 +14,7 @@ import {
 } from 'react-native-dynamic';
 import Icon from 'react-native-vector-icons/AntDesign';
 import DropdownAlert from 'react-native-dropdownalert';
+import {useActionSheet} from '@expo/react-native-action-sheet';
 
 import {ListsParam} from '@/navigations/lists';
 import {HomeParam} from '@/navigations/home';
@@ -34,6 +35,8 @@ type Props = StackScreenProps<ListsParam & HomeParam, 'Index'> & {
 const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
   const {projectID} = route.params;
 
+  const {showActionSheetWithOptions} = useActionSheet();
+
   useEffect(() => {
     dispatch(getLists(navigation, projectID));
   }, [projectID]);
@@ -53,6 +56,37 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
 
   const onRefresh = () => {
     dispatch(getLists(navigation, projectID));
+  };
+
+  const openTaskActions = (selected: (list: List) => void) => {
+    showActionSheetWithOptions(
+      {
+        title: 'Move the task under a list',
+        message: 'Please choose a list to move the task to',
+        options: lists.lists.map((l) => l.title).concat(['Cancel']),
+        cancelButtonIndex: lists.lists.length,
+        showSeparators: true,
+        icons: lists.lists
+          .map((l) => (
+            <View
+              style={{
+                backgroundColor: `#${l.color}`,
+                width: 24,
+                height: 24,
+                borderRadius: 20,
+              }}></View>
+          ))
+          .concat([<View style={{width: 24, height: 24}}></View>]),
+        textStyle: {color: '#0069d9', fontWeight: 'bold'},
+      },
+      (buttonIndex) => {
+        // Cancel case
+        if (buttonIndex >= lists.lists.length) {
+          return;
+        }
+        selected(lists.lists[buttonIndex]);
+      },
+    );
   };
 
   const openTask = (params: {
@@ -117,7 +151,15 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
               </TouchableOpacity>
             );
           } else {
-            return <TaskItem task={item} list={section.list} open={openTask} />;
+            return (
+              <TaskItem
+                task={item}
+                list={section.list}
+                open={openTask}
+                openTaskActions={openTaskActions}
+                dispatch={dispatch}
+              />
+            );
           }
         }}
         renderSectionHeader={({section: {list}}) => (

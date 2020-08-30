@@ -13,6 +13,10 @@ import 'react-native-gesture-handler';
 import {NavigationContainer} from '@react-navigation/native';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {Provider} from 'react-redux';
+import {
+  ActionSheetProvider,
+  connectActionSheet,
+} from '@expo/react-native-action-sheet';
 
 import store from './store';
 import {DrawerParam} from './navigations/drawer';
@@ -36,4 +40,14 @@ const App = () => {
   );
 };
 
-export default App;
+const ConnectedApp = connectActionSheet(App);
+
+const AppContainer = () => {
+  return (
+    <ActionSheetProvider>
+      <ConnectedApp />
+    </ActionSheetProvider>
+  );
+};
+
+export default AppContainer;
