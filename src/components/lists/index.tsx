@@ -58,7 +58,7 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
     dispatch(getLists(navigation, projectID));
   };
 
-  const openTaskActions = () => {
+  const openTaskActions = (selected: (list: List) => void) => {
     showActionSheetWithOptions(
       {
         title: 'Move the task under a list',
@@ -80,7 +80,11 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
         textStyle: {color: '#0069d9', fontWeight: 'bold'},
       },
       (buttonIndex) => {
-        console.log(buttonIndex);
+        // Cancel case
+        if (buttonIndex >= lists.lists.length) {
+          return;
+        }
+        selected(lists.lists[buttonIndex]);
       },
     );
   };
@@ -153,6 +157,7 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
                 list={section.list}
                 open={openTask}
                 openTaskActions={openTaskActions}
+                dispatch={dispatch}
               />
             );
           }

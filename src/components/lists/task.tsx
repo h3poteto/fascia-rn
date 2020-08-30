@@ -6,18 +6,33 @@ import {
   useDynamicValue,
 } from 'react-native-dynamic';
 import Icon from 'react-native-vector-icons/AntDesign';
+import {ThunkDispatch} from 'redux-thunk';
 
 import {List} from '@/entities/list';
 import {Task} from '@/entities/task';
+import Actions, {moveTask} from '@/actions/projects/lists';
 
 type Props = {
   list: List;
   task: Task;
-  open: Function;
-  openTaskActions: Function;
+  open: (params: {
+    projectID: number;
+    listID: number;
+    taskID: number;
+    title: string;
+  }) => void;
+  openTaskActions: (selected: (list: List) => void) => void;
+} & {
+  dispatch: ThunkDispatch<any, any, Actions>;
 };
 
-const task: React.FC<Props> = ({list, task, open, openTaskActions}) => {
+const task: React.FC<Props> = ({
+  list,
+  task,
+  open,
+  openTaskActions,
+  dispatch,
+}) => {
   const onPress = () => {
     open({
       projectID: list.project_id,
@@ -26,12 +41,21 @@ const task: React.FC<Props> = ({list, task, open, openTaskActions}) => {
       title: task.title,
     });
   };
+
+  const moveTaskTo = (list: List): void => {
+    dispatch(moveTask(list.project_id, task.list_id, list.id, task.id, null));
+  };
+
+  const onLongPress = () => {
+    openTaskActions(moveTaskTo);
+  };
+
   const styles = useDynamicValue(dynamicStyles);
   return (
     <TouchableOpacity
       style={styles.item}
       onPress={onPress}
-      onLongPress={() => openTaskActions()}>
+      onLongPress={onLongPress}>
       <View style={styles.wrapper}>
         <View
           style={{
