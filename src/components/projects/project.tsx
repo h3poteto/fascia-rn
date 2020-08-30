@@ -10,7 +10,7 @@ import {Project} from '@/entities/project';
 
 type Props = {
   project: Project;
-  open: Function;
+  open: (params: {projectID: number; title: string}) => void;
 };
 
 const item: React.FC<Props> = ({project, open}) => {
