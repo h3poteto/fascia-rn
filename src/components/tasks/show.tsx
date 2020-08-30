@@ -8,6 +8,7 @@ import {View, Text, ScrollView, RefreshControl} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {ThunkDispatch} from 'redux-thunk';
 import DropdownAlert from 'react-native-dropdownalert';
+import Markdown from 'react-native-markdown-renderer';
 
 import {TasksParam} from '@/navigations/tasks';
 import Actions, {getTask, clearGetError} from '@/actions/projects/tasks/show';
@@ -45,6 +46,7 @@ const task: React.FC<Props> = ({route, dispatch, tasks, navigation}) => {
   };
 
   const styles = useDynamicValue(dynamicStyles);
+  const markdownStyles = useDynamicValue(dynamicMarkdownStyles);
   return (
     <View style={styles.container}>
       <ScrollView
@@ -52,7 +54,11 @@ const task: React.FC<Props> = ({route, dispatch, tasks, navigation}) => {
           <RefreshControl refreshing={tasks.loading} onRefresh={onRefresh} />
         }>
         <Text style={styles.title}>{tasks.task?.title}</Text>
-        <Text style={styles.description}>{tasks.task?.description}</Text>
+        <View style={styles.description}>
+          <Markdown style={markdownStyles}>
+            {tasks.task?.description ? tasks.task.description : ''}
+          </Markdown>
+        </View>
       </ScrollView>
       <DropdownAlert ref={(ref) => (dropdown.current = ref)} />
     </View>
@@ -82,6 +88,12 @@ const dynamicStyles = new DynamicStyleSheet({
     fontSize: 16,
     color: new DynamicValue('#000000', '#dcdcdc'),
     backgroundColor: new DynamicValue('#ffffff', '#101010'),
+  },
+});
+
+const dynamicMarkdownStyles = new DynamicStyleSheet({
+  text: {
+    fontSize: 16,
   },
 });
 
