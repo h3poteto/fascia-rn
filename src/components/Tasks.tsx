@@ -68,6 +68,8 @@ const Tasks: React.FC<Props> = ({navigation, dispatch, state}) => {
       <TasksStack.Screen
         name="New"
         options={{
+          headerStyle: {backgroundColor: backgroundColor},
+          headerTintColor: titleColor,
           headerBackImage: () => (
             <Icon name="close" size={25} style={headerStyles.close} />
           ),
@@ -77,6 +79,8 @@ const Tasks: React.FC<Props> = ({navigation, dispatch, state}) => {
       <TasksStack.Screen
         name="Edit"
         options={{
+          headerStyle: {backgroundColor: backgroundColor},
+          headerTintColor: titleColor,
           headerBackImage: () => (
             <Icon name="close" size={25} style={headerStyles.close} />
           ),

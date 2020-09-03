@@ -32,6 +32,9 @@ type Props = StackScreenProps<ListsParam & HomeParam, 'Index'> & {
   dispatch: ThunkDispatch<any, any, Actions>;
 };
 
+const dynamicActionSheetContainerColor = new DynamicValue('#f0f0f0', '#1a1a1a');
+const dynamicActionSheetTitleColor = new DynamicValue('#5a5a5a', '#f0f0f0');
+
 const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
   const {projectID} = route.params;
 
@@ -58,6 +61,11 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
     dispatch(getLists(navigation, projectID));
   };
 
+  const actionSheetContainerColor = useDynamicValue(
+    dynamicActionSheetContainerColor,
+  );
+  const actionSheetTitleColor = useDynamicValue(dynamicActionSheetTitleColor);
+
   const openTaskActions = (selected: (list: List) => void) => {
     showActionSheetWithOptions(
       {
@@ -78,6 +86,9 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
           ))
           .concat([<View style={{width: 24, height: 24}}></View>]),
         textStyle: {color: '#0069d9', fontWeight: 'bold'},
+        containerStyle: {backgroundColor: actionSheetContainerColor},
+        titleTextStyle: {color: actionSheetTitleColor},
+        messageTextStyle: {color: actionSheetTitleColor},
       },
       (buttonIndex) => {
         // Cancel case
@@ -192,6 +203,7 @@ const dynamicStyles = new DynamicStyleSheet({
     paddingTop: 12,
     paddingBottom: 12,
     paddingLeft: 24,
+    color: new DynamicValue('#000000', '#dcdcdc'),
   },
 });
 

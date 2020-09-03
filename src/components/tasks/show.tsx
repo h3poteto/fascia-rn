@@ -94,6 +94,7 @@ const dynamicStyles = new DynamicStyleSheet({
 const dynamicMarkdownStyles = new DynamicStyleSheet({
   text: {
     fontSize: 16,
+    color: new DynamicValue('#000000', '#dcdcdc'),
   },
 });
 
