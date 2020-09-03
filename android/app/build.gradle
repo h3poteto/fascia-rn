@@ -78,6 +78,9 @@ import com.android.build.OutputFile
  */
 
 project.ext.react = [
+    bundleInStaging: true,
+    devDisabledInStaging: true,
+    entryFile: "index.js",
     enableHermes: false,  // clean and rebuild if changing
 ]
 
@@ -154,6 +157,13 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            applicationIdSuffix ".dev"
+        }
+        staging {
+            initWith release
+            signingConfig signingConfigs.debug
+            matchingFallbacks = ['release']
+            applicationIdSuffix ".stg"
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
@@ -203,6 +213,7 @@ dependencies {
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
         debugImplementation files(hermesPath + "hermes-debug.aar")
+        stagingImplementation files(hermesPath + "hermes-release.aar")
         releaseImplementation files(hermesPath + "hermes-release.aar")
     } else {
         implementation jscFlavor
