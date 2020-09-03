@@ -91,7 +91,7 @@ const dynamicStyles = new DynamicStyleSheet({
     width: 24,
     height: 24,
     marginRight: 12,
-    color: new DynamicValue('#acacac', '#2a2a2a'),
+    color: new DynamicValue('#acacac', '#9a9a9a'),
   },
 });
 
