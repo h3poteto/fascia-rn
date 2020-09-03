@@ -111,7 +111,7 @@ const dynamicStyles = new DynamicStyleSheet({
   title: {
     borderWidth: 0,
     color: new DynamicValue('#000000', '#dcdcdc'),
-    backgroundColor: new DynamicValue('#ffffff', '#101010'),
+    backgroundColor: new DynamicValue('#ffffff', '#202020'),
     marginTop: 8,
     paddingLeft: 12,
     paddingRight: 12,
@@ -120,7 +120,7 @@ const dynamicStyles = new DynamicStyleSheet({
   description: {
     borderWidth: 0,
     color: new DynamicValue('#000000', '#dcdcdc'),
-    backgroundColor: new DynamicValue('#ffffff', '#101010'),
+    backgroundColor: new DynamicValue('#ffffff', '#202020'),
     marginTop: 8,
     paddingLeft: 12,
     paddingRight: 12,
