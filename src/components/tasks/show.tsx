@@ -111,7 +111,7 @@ const dynamicMarkdownStyles = new DynamicStyleSheet({
     lineHeight: 20,
   },
   listOrderedItemIcon: {
-    color: '#fff',
+    color: new DynamicValue('#000000', '#dcdcdc'),
     lineHeight: 42,
     paddingLeft: 4,
     paddingRight: 6,
@@ -124,7 +124,7 @@ const dynamicMarkdownStyles = new DynamicStyleSheet({
     lineHeight: 20,
   },
   listUnorderedItemIcon: {
-    color: '#fff',
+    color: new DynamicValue('#000000', '#dcdcdc'),
     lineHeight: 42,
     paddingLeft: 4,
     paddingRight: 6,
