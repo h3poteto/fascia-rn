@@ -4,6 +4,7 @@ import {
   View,
   TouchableOpacity,
   RefreshControl,
+  ViewStyle,
 } from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {ThunkDispatch} from 'redux-thunk';
@@ -32,8 +33,9 @@ type Props = StackScreenProps<ListsParam & HomeParam, 'Index'> & {
   dispatch: ThunkDispatch<any, any, Actions>;
 };
 
-const dynamicActionSheetContainerColor = new DynamicValue('#f0f0f0', '#1a1a1a');
+const dynamicActionSheetContainerColor = new DynamicValue('#f0f0f0', '#202020');
 const dynamicActionSheetTitleColor = new DynamicValue('#5a5a5a', '#f0f0f0');
+const dynamicActionSheetSeparatorColor = new DynamicValue('#DED0DE', '#4E404E');
 
 const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
   const {projectID} = route.params;
@@ -65,6 +67,9 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
     dynamicActionSheetContainerColor,
   );
   const actionSheetTitleColor = useDynamicValue(dynamicActionSheetTitleColor);
+  const actionSheetSeparatorColor = useDynamicValue(
+    dynamicActionSheetSeparatorColor,
+  );
 
   const openTaskActions = (selected: (list: List) => void) => {
     showActionSheetWithOptions(
@@ -89,6 +94,9 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
         containerStyle: {backgroundColor: actionSheetContainerColor},
         titleTextStyle: {color: actionSheetTitleColor},
         messageTextStyle: {color: actionSheetTitleColor},
+        separatorStyle: {
+          backgroundColor: actionSheetSeparatorColor,
+        } as ViewStyle,
       },
       (buttonIndex) => {
         // Cancel case
@@ -193,7 +201,7 @@ const dynamicStyles = new DynamicStyleSheet({
     width: '100%',
     flex: 1,
     justifyContent: 'center',
-    backgroundColor: new DynamicValue('#ffffff', '#101010'),
+    backgroundColor: new DynamicValue('#ffffff', '#1a1a1a'),
   },
   plus: {
     marginTop: 0,

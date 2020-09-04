@@ -78,7 +78,7 @@ const dynamicStyles = new DynamicStyleSheet({
     marginTop: 8,
     fontSize: 20,
     color: new DynamicValue('#000000', '#dcdcdc'),
-    backgroundColor: new DynamicValue('#ffffff', '#101010'),
+    backgroundColor: new DynamicValue('#ffffff', '#1a1a1a'),
     fontWeight: 'bold',
   },
   description: {
@@ -87,7 +87,7 @@ const dynamicStyles = new DynamicStyleSheet({
     paddingBottom: 12,
     fontSize: 16,
     color: new DynamicValue('#000000', '#dcdcdc'),
-    backgroundColor: new DynamicValue('#ffffff', '#101010'),
+    backgroundColor: new DynamicValue('#ffffff', '#1a1a1a'),
   },
 });
 

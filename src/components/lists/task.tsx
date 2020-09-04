@@ -76,7 +76,7 @@ const dynamicStyles = new DynamicStyleSheet({
     paddingTop: 12,
     paddingBottom: 12,
     paddingLeft: 24,
-    backgroundColor: new DynamicValue('#ffffff', '#101010'),
+    backgroundColor: new DynamicValue('#ffffff', '#1a1a1a'),
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
