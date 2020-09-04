@@ -96,6 +96,39 @@ const dynamicMarkdownStyles = new DynamicStyleSheet({
     fontSize: 16,
     color: new DynamicValue('#000000', '#dcdcdc'),
   },
+  listItem: {
+    flex: 1,
+    flexWrap: 'wrap',
+    width: '100%',
+    fontSize: 18,
+    lineHeight: 20,
+  },
+  listOrdered: {
+    width: '100%',
+  },
+  listOrderedText: {
+    fontSize: 18,
+    lineHeight: 20,
+  },
+  listOrderedItemIcon: {
+    color: new DynamicValue('#000000', '#dcdcdc'),
+    lineHeight: 42,
+    paddingLeft: 4,
+    paddingRight: 6,
+  },
+  listUnordered: {
+    width: '100%',
+  },
+  listUnorderedItemText: {
+    fontSize: 18,
+    lineHeight: 20,
+  },
+  listUnorderedItemIcon: {
+    color: new DynamicValue('#000000', '#dcdcdc'),
+    lineHeight: 42,
+    paddingLeft: 4,
+    paddingRight: 6,
+  },
 });
 
 export default task;
