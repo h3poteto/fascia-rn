@@ -25,6 +25,14 @@ export const post = async <T>(
   params = {},
 ): Promise<AxiosResponse<T>> => {
   let options: AxiosRequestConfig = {};
+  const cookie = await restoreCookie();
+  if (cookie !== null) {
+    options = Object.assign(options, {
+      headers: {
+        Cookie: cookie,
+      },
+    });
+  }
   return axios.post<T>(url, params, options);
 };
 
@@ -33,6 +41,14 @@ export const patch = async <T>(
   params = {},
 ): Promise<AxiosResponse<T>> => {
   let options: AxiosRequestConfig = {};
+  const cookie = await restoreCookie();
+  if (cookie !== null) {
+    options = Object.assign(options, {
+      headers: {
+        Cookie: cookie,
+      },
+    });
+  }
   return axios.patch<T>(url, params, options);
 };
 
@@ -41,6 +57,14 @@ export const put = async <T>(
   params = {},
 ): Promise<AxiosResponse<T>> => {
   let options: AxiosRequestConfig = {};
+  const cookie = await restoreCookie();
+  if (cookie !== null) {
+    options = Object.assign(options, {
+      headers: {
+        Cookie: cookie,
+      },
+    });
+  }
   return axios.put<T>(url, params, options);
 };
 
@@ -51,6 +75,14 @@ export const del = async <T>(
   let options: AxiosRequestConfig = {
     data: params,
   };
+  const cookie = await restoreCookie();
+  if (cookie !== null) {
+    options = Object.assign(options, {
+      headers: {
+        Cookie: cookie,
+      },
+    });
+  }
   return axios.delete<T>(url, options);
 };
 
