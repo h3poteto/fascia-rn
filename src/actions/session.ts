@@ -1,5 +1,5 @@
 import {Action, Dispatch} from 'redux';
-import axios from 'axios';
+import {UpdateSession} from '@/apiClient';
 
 export const RequestUpdateSession = 'RequestUpdateSession' as const;
 export const ReceiveUpdateSession = 'ReceiveUpdateSession' as const;
@@ -15,7 +15,7 @@ export const receiveUpdateSession = () => ({
 export const updateSession = () => {
   return (dispatch: Dispatch<Action>) => {
     dispatch(requestUpdateSession());
-    axios.patch<{}>('https://fascia.io/session').then(() => {
+    UpdateSession().then(() => {
       dispatch(receiveUpdateSession());
     });
   };

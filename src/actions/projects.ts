@@ -1,6 +1,6 @@
 import {Dispatch, Action} from 'redux';
-import axios from 'axios';
-import {ServerProject, Project, converter} from '@/entities/project';
+import {GetProjects} from '@/apiClient';
+import {Project} from '@/entities/project';
 
 export const RequestGetProjects = 'RequestGetProjects' as const;
 export const ReceiveGetProjects = 'ReceiveGetProjects' as const;
@@ -30,10 +30,8 @@ export const clearGetError = () => ({
 export const getProjects = (navigation: any) => {
   return (dispatch: Dispatch<Action>) => {
     dispatch(requestGetProjects());
-    axios
-      .get<Array<ServerProject>>('https://fascia.io/api/projects')
-      .then((res) => {
-        const data: Array<Project> = res.data.map((p) => converter(p));
+    GetProjects()
+      .then((data) => {
         dispatch(receiveGetProjects(data));
       })
       .catch((err) => {

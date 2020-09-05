@@ -1,7 +1,7 @@
-import axios from 'axios';
 import {Action, Dispatch} from 'redux';
 
-import {Task, ServerTask, converter} from '@/entities/task';
+import {GetTask} from '@/apiClient';
+import {Task} from '@/entities/task';
 
 export const RequestGetTask = 'RequestGetTask' as const;
 export const ReceiveGetTask = 'ReceiveGetTask' as const;
@@ -34,13 +34,9 @@ export const getTask = (
 ) => {
   return (dispatch: Dispatch<Action>) => {
     dispatch(requestGetTask());
-    axios
-      .get<ServerTask>(
-        `https://fascia.io/api/projects/${projectID}/lists/${listID}/tasks/${taskID}`,
-      )
-      .then((res) => {
-        const data = converter(res.data);
-        dispatch(receiveGetTask(data));
+    GetTask(projectID, listID, taskID)
+      .then((task) => {
+        dispatch(receiveGetTask(task));
       })
       .catch((err) => {
         switch (err.response.status) {

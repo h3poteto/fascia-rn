@@ -1,7 +1,6 @@
-import axios from 'axios';
-
+import {CreateTask} from '@/apiClient';
 import {getLists} from '@/actions/projects/lists';
-import {Task, ServerTask, converter} from '@/entities/task';
+import {Task} from '@/entities/task';
 
 export const RequestCreateTask = 'RequestCreateTask' as const;
 export const ReceiveCreateTask = 'ReceiveCreateTask' as const;
@@ -34,14 +33,9 @@ export const createTask = (
 ) => {
   return async (dispatch: Function) => {
     dispatch(requestCreateTask());
-    return axios
-      .post<ServerTask>(
-        `https://fascia.io/api/projects/${projectID}/lists/${listID}/tasks`,
-        params,
-      )
-      .then((res) => {
-        const data = converter(res.data);
-        dispatch(receiveCreateTask(data));
+    return CreateTask(projectID, listID, params)
+      .then((task) => {
+        dispatch(receiveCreateTask(task));
         dispatch(getLists(navigation, projectID));
         navigation.goBack();
       })
