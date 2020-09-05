@@ -1,4 +1,5 @@
 import React from 'react';
+import {Platform} from 'react-native';
 import {WebView} from 'react-native-webview';
 import {
   DrawerScreenProps,
@@ -29,13 +30,13 @@ const handleWebViewNavigationStateChange = async (
   const {url} = newNavState;
   if (!url) return;
   if (url.includes('fascia.io/webviews/callback')) {
-    // For iOS
-    // Because WKWebView don't share cookie with other http requests.
-    // https://stackoverflow.com/questions/62057393/how-to-keep-last-web-session-active-in-react-native-webview
-    const cookies = await CookieManager.getAll(true);
-    await AsyncStorage.setItem('savedCookies', JSON.stringify(cookies));
-
-    console.log(cookies);
+    if (Platform.OS === 'ios') {
+      // For iOS
+      // Because WKWebView don't share cookie with other http requests.
+      // https://stackoverflow.com/questions/62057393/how-to-keep-last-web-session-active-in-react-native-webview
+      const cookies = await CookieManager.getAll(true);
+      await AsyncStorage.setItem('savedCookies', JSON.stringify(cookies));
+    }
     navigation.navigate('Home', {
       screen: 'Projects',
     });
