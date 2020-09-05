@@ -4,8 +4,8 @@ import {
   DrawerScreenProps,
   DrawerNavigationProp,
 } from '@react-navigation/drawer';
-import CookieManager from '@react-native-community/cookies'
-import AsyncStorage from '@react-native-community/async-storage'
+import CookieManager from '@react-native-community/cookies';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import {DrawerParam} from '@/navigations/drawer';
 
@@ -32,12 +32,12 @@ const handleWebViewNavigationStateChange = async (
     // For iOS
     // Because WKWebView don't share cookie with other http requests.
     // https://stackoverflow.com/questions/62057393/how-to-keep-last-web-session-active-in-react-native-webview
-    const cookies = await CookieManager.getAll(true)
-    await AsyncStorage.setItem('savedCookie', JSON.stringify(cookies))
+    const cookies = await CookieManager.getAll(true);
+    await AsyncStorage.setItem('savedCookies', JSON.stringify(cookies));
 
-    console.log(cookies)
+    console.log(cookies);
     navigation.navigate('Home', {
-      screen: 'Projects'
+      screen: 'Projects',
     });
     return;
   }
