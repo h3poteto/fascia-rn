@@ -1,5 +1,5 @@
 import {Action, Dispatch} from 'redux';
-import {GetLists, MoveTask} from '@/apiClient';
+import {GetLists, MoveTask, HideList, DisplayList} from '@/apiClient';
 
 import {List} from '@/entities/list';
 
@@ -9,6 +9,10 @@ export const ReceiveNoneList = 'ReceiveNoneList' as const;
 export const ErrorGetLists = 'ErrorGetLists' as const;
 export const ClearGetError = 'ClearGetError' as const;
 export const RequestMoveTask = 'RequestMoveTask' as const;
+export const RequestHideList = 'RequestHideList' as const;
+export const ReceiveHideList = 'ReceiveHideList' as const;
+export const RequestDisplayList = 'RequestDisplayList' as const;
+export const ReceiveDisplayList = 'ReceiveDisplayList' as const;
 
 export const requestGetLists = () => ({
   type: RequestGetLists,
@@ -79,6 +83,52 @@ export const moveTask = (
   };
 };
 
+export const requestHideList = () => ({
+  type: RequestHideList,
+});
+
+export const receiveHideList = () => ({
+  type: ReceiveHideList,
+});
+
+export const hideList = (projectID: number, listID: number) => {
+  return (dispatch: Dispatch<Action>) => {
+    dispatch(requestHideList());
+    HideList(projectID, listID)
+      .then(({lists, none}) => {
+        dispatch(receiveHideList());
+        dispatch(receiveGetLists(lists));
+        dispatch(receiveNoneList(none));
+      })
+      .catch((err) => {
+        dispatch(errorGetLists(err));
+      });
+  };
+};
+
+export const requestDisplayList = () => ({
+  type: RequestDisplayList,
+});
+
+export const receiveDisplayList = () => ({
+  type: ReceiveDisplayList,
+});
+
+export const displayList = (projectID: number, listID: number) => {
+  return (dispatch: Dispatch<Action>) => {
+    dispatch(requestDisplayList());
+    DisplayList(projectID, listID)
+      .then(({lists, none}) => {
+        dispatch(receiveDisplayList());
+        dispatch(receiveGetLists(lists));
+        dispatch(receiveNoneList(none));
+      })
+      .catch((err) => {
+        dispatch(errorGetLists(err));
+      });
+  };
+};
+
 type Actions = ReturnType<
   | typeof requestGetLists
   | typeof receiveGetLists
@@ -86,6 +136,10 @@ type Actions = ReturnType<
   | typeof errorGetLists
   | typeof clearGetError
   | typeof requestMoveTask
+  | typeof requestHideList
+  | typeof receiveHideList
+  | typeof requestDisplayList
+  | typeof receiveDisplayList
 >;
 
 export default Actions;
