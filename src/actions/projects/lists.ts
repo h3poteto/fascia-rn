@@ -1,7 +1,7 @@
 import {Action, Dispatch} from 'redux';
-import axios from 'axios';
+import {GetLists, MoveTask} from '@/apiClient';
 
-import {List, Lists, converter} from '@/entities/list';
+import {List} from '@/entities/list';
 
 export const RequestGetLists = 'RequestGetLists' as const;
 export const ReceiveGetLists = 'ReceiveGetLists' as const;
@@ -36,12 +36,9 @@ export const clearGetError = () => ({
 export const getLists = (navigation: any, projectID: number) => {
   return (dispatch: Dispatch<Action>) => {
     dispatch(requestGetLists());
-    axios
-      .get<Lists>(`https://fascia.io/api/projects/${projectID}/lists`)
-      .then((res) => {
-        const data: Array<List> = res.data.Lists.map((l) => converter(l));
-        dispatch(receiveGetLists(data));
-        const none = converter(res.data.NoneList);
+    GetLists(projectID)
+      .then(({lists, none}) => {
+        dispatch(receiveGetLists(lists));
         dispatch(receiveNoneList(none));
       })
       .catch((err) => {
@@ -71,18 +68,9 @@ export const moveTask = (
 ) => {
   return (dispatch: Dispatch<Action>) => {
     dispatch(requestMoveTask());
-    axios
-      .post<Lists>(
-        `https://fascia.io/api/projects/${projectID}/lists/${fromListID}/tasks/${taskID}/move_task`,
-        {
-          to_list_id: toListID,
-          prev_to_task_id: prevToTaskID,
-        },
-      )
-      .then((res) => {
-        const data: Array<List> = res.data.Lists.map((l) => converter(l));
-        dispatch(receiveGetLists(data));
-        const none = converter(res.data.NoneList);
+    MoveTask(projectID, fromListID, toListID, taskID, prevToTaskID)
+      .then(({lists, none}) => {
+        dispatch(receiveGetLists(lists));
         dispatch(receiveNoneList(none));
       })
       .catch((err) => {

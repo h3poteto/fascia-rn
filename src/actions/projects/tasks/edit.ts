@@ -1,7 +1,6 @@
-import axios from 'axios';
-
+import {UpdateTask} from '@/apiClient';
 import {getLists} from '@/actions/projects/lists';
-import {Task, ServerTask, converter} from '@/entities/task';
+import {Task} from '@/entities/task';
 
 export const RequestUpdateTask = 'RequestUpdateTask' as const;
 export const ReceiveUpdateTask = 'ReceiveUpdateTask' as const;
@@ -35,14 +34,9 @@ export const updateTask = (
 ) => {
   return async (dispatch: Function) => {
     dispatch(requestUpdateTask());
-    return axios
-      .patch<ServerTask>(
-        `https://fascia.io/api/projects/${projectID}/lists/${listID}/tasks/${taskID}`,
-        params,
-      )
-      .then((res) => {
-        const data = converter(res.data);
-        dispatch(receiveUpdateTask(data));
+    return UpdateTask(projectID, listID, taskID, params)
+      .then((task) => {
+        dispatch(receiveUpdateTask(task));
         dispatch(getLists(navigation, projectID));
         navigation.goBack();
       })
