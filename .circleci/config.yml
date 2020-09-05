@@ -1,0 +1,31 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: node:12.18.3-alpine3.12
+    working_directory: /var/opt/app
+    steps:
+      - checkout
+      - run:
+          name: git
+          command: |
+            apk add --no-cache git
+      - restore_cache:
+          name: Restoring cache - node_modules
+          keys:
+            - node_modules-{{ arch }}-node12.18.3-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}
+
+      - run:
+          name: Install packages
+          command: |
+            yarn install
+      - save_cache:
+          name: Saving cache - node_modules
+          key: node_modules-{{ arch }}-node12.18.2-{{ checksum "package.json" }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+      - run:
+          name: Type check
+          command: |
+            yarn run typecheck
+

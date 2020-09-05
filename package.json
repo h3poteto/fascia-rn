@@ -7,7 +7,9 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "typecheck": "tsc",
+    "typecheck:watch": "tsc --watch"
   },
   "dependencies": {
     "@expo/react-native-action-sheet": "^3.8.0",
@@ -19,7 +21,7 @@
     "@react-navigation/stack": "^5.9.0",
     "axios": "^0.20.0",
     "react": "16.13.1",
-    "react-hook-form": "^6.5.3",
+    "react-hook-form": "6.7.2",
     "react-native": "0.63.2",
     "react-native-dropdownalert": "^4.3.0",
     "react-native-dynamic": "^1.0.0",
@@ -50,6 +52,7 @@
     "babel-jest": "^25.1.0",
     "babel-plugin-module-resolver": "^4.0.0",
     "eslint": "^6.5.1",
+    "identity-obj-proxy": "^3.0.0",
     "jest": "^25.1.0",
     "metro-react-native-babel-preset": "^0.59.0",
     "prettier": "^2.0.4",
@@ -66,6 +69,13 @@
       "jsx",
       "json",
       "node"
-    ]
+    ],
+    "setupFiles": [
+      "./jest/supports/async-storage.js",
+      "./jest/supports/react-navigation.js"
+    ],
+    "moduleNameMapper": {
+      ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "identity-obj-proxy"
+    }
   }
 }
