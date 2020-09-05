@@ -1,4 +1,4 @@
 export type DrawerParam = {
-  Home: undefined;
+  Home: { screen: string; params?: any} | undefined;
   Login: undefined;
 };
