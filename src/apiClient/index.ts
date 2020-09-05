@@ -90,3 +90,31 @@ export const UpdateTask = async (
     return taskConverter(res.data);
   });
 };
+
+export const HideList = async (
+  projectID: number,
+  listID: number,
+): Promise<{lists: Array<List>; none: List}> => {
+  return patch<Lists>(
+    `${BaseURL}/api/projects/${projectID}/lists/${listID}/hide`,
+  ).then((res) => {
+    // console.log(res);
+    const data: Array<List> = res.data.Lists.map((l) => listConverter(l));
+    const none = listConverter(res.data.NoneList);
+    return {lists: data, none: none};
+  });
+};
+
+export const DisplayList = async (
+  projectID: number,
+  listID: number,
+): Promise<{lists: Array<List>; none: List}> => {
+  return patch<Lists>(
+    `${BaseURL}/api/projects/${projectID}/lists/${listID}/display`,
+  ).then((res) => {
+    // console.log(res);
+    const data: Array<List> = res.data.Lists.map((l) => listConverter(l));
+    const none = listConverter(res.data.NoneList);
+    return {lists: data, none: none};
+  });
+};

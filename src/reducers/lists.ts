@@ -6,6 +6,8 @@ import Actions, {
   ErrorGetLists,
   ClearGetError,
   RequestMoveTask,
+  RequestHideList,
+  RequestDisplayList,
 } from '@/actions/projects/lists';
 import {List} from '@/entities/list';
 
@@ -30,6 +32,8 @@ const reducer: Reducer<State, Actions> = (
   switch (action.type) {
     case RequestGetLists:
     case RequestMoveTask:
+    case RequestHideList:
+    case RequestDisplayList:
       return {
         ...state,
         loading: true,

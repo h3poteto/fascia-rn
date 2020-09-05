@@ -19,7 +19,12 @@ import {useActionSheet} from '@expo/react-native-action-sheet';
 
 import {ListsParam} from '@/navigations/lists';
 import {HomeParam} from '@/navigations/home';
-import Actions, {getLists, clearGetError} from '@/actions/projects/lists';
+import Actions, {
+  getLists,
+  clearGetError,
+  displayList,
+  hideList,
+} from '@/actions/projects/lists';
 import {State as ListsState} from '@/reducers/lists';
 import listSeparator from '@/components/atoms/listSeparator';
 import sectionSeparator from '@/components/atoms/sectionSeparator';
@@ -137,10 +142,18 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
     pull_request: false,
   };
 
-  const renderData = lists.lists.map((l) => ({
-    list: l,
-    data: l.tasks.concat([newTask]),
-  }));
+  const renderData = lists.lists.map((l) => {
+    if (l.is_hidden) {
+      return {
+        list: l,
+        data: [newTask],
+      };
+    }
+    return {
+      list: l,
+      data: l.tasks.concat([newTask]),
+    };
+  });
 
   const openNew = (list: List) => {
     navigation.navigate('Tasks', {
@@ -150,6 +163,14 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
         listID: list.id,
       },
     });
+  };
+
+  const changeListVisible = (list: List) => {
+    if (list.is_hidden) {
+      dispatch(displayList(list.project_id, list.id));
+    } else {
+      dispatch(hideList(list.project_id, list.id));
+    }
   };
 
   const styles = useDynamicValue(dynamicStyles);
@@ -182,7 +203,7 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
           }
         }}
         renderSectionHeader={({section: {list}}) => (
-          <ListItem list={list}></ListItem>
+          <ListItem list={list} onPress={changeListVisible}></ListItem>
         )}
         refreshControl={
           <RefreshControl refreshing={lists.loading} onRefresh={onRefresh} />
