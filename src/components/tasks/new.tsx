@@ -1,5 +1,12 @@
-import React, {useRef, useEffect} from 'react';
-import {View, ScrollView, Text, TextInput, Button} from 'react-native';
+import React, {useRef, useEffect, useLayoutEffect} from 'react';
+import {
+  View,
+  ScrollView,
+  Text,
+  TextInput,
+  Button,
+  Platform,
+} from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {ThunkDispatch} from 'redux-thunk';
 import {
@@ -47,6 +54,14 @@ const New: React.FC<Props> = ({dispatch, navigation, route, error}) => {
     }
   }, [error]);
 
+  if (Platform.OS === 'ios') {
+    useLayoutEffect(() => {
+      navigation.setOptions({
+        headerRight: () => <Button onPress={onSubmit} title="Save" />,
+      });
+    });
+  }
+
   const styles = useDynamicValue(dynamicStyles);
 
   return (
@@ -86,9 +101,11 @@ const New: React.FC<Props> = ({dispatch, navigation, route, error}) => {
           defaultValue=""
         />
       </ScrollView>
-      <View style={styles.submit}>
-        <Button title="Submit" color="#0069d9" onPress={onSubmit} />
-      </View>
+      {Platform.OS != 'ios' && (
+        <View style={styles.submit}>
+          <Button title="Submit" color="#0069d9" onPress={onSubmit} />
+        </View>
+      )}
       <DropdownAlert ref={(ref) => (dropdown.current = ref)} />
     </View>
   );
@@ -113,18 +130,25 @@ const dynamicStyles = new DynamicStyleSheet({
     color: new DynamicValue('#000000', '#dcdcdc'),
     backgroundColor: new DynamicValue('#ffffff', '#202020'),
     marginTop: 8,
+    paddingTop: 12,
     paddingLeft: 12,
     paddingRight: 12,
+    paddingBottom: 12,
     fontSize: 18,
+    lineHeight: 24,
+    minHeight: 40,
   },
   description: {
     borderWidth: 0,
     color: new DynamicValue('#000000', '#dcdcdc'),
     backgroundColor: new DynamicValue('#ffffff', '#202020'),
     marginTop: 8,
+    paddingTop: 12,
     paddingLeft: 12,
     paddingRight: 12,
+    paddingBottom: 12,
     fontSize: 18,
+    lineHeight: 24,
   },
   error: {
     color: '#dc3545',

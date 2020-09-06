@@ -1,6 +1,13 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useLayoutEffect} from 'react';
 import {StackScreenProps} from '@react-navigation/stack';
-import {Text, View, TextInput, Button, ScrollView} from 'react-native';
+import {
+  Text,
+  View,
+  TextInput,
+  Button,
+  ScrollView,
+  Platform,
+} from 'react-native';
 import {
   DynamicStyleSheet,
   DynamicValue,
@@ -52,6 +59,14 @@ const edit: React.FC<Props> = ({navigation, task, dispatch, error}) => {
     }
   }, [error]);
 
+  if (Platform.OS === 'ios') {
+    useLayoutEffect(() => {
+      navigation.setOptions({
+        headerRight: () => <Button onPress={onSubmit} title="Save" />,
+      });
+    });
+  }
+
   const styles = useDynamicValue(dynamicStyles);
 
   return (
@@ -91,9 +106,11 @@ const edit: React.FC<Props> = ({navigation, task, dispatch, error}) => {
           defaultValue={task?.description}
         />
       </ScrollView>
-      <View style={styles.submit}>
-        <Button title="Submit" color="#0069d9" onPress={onSubmit} />
-      </View>
+      {Platform.OS != 'ios' && (
+        <View style={styles.submit}>
+          <Button title="Submit" color="#0069d9" onPress={onSubmit} />
+        </View>
+      )}
       <DropdownAlert ref={(ref) => (dropdown.current = ref)} />
     </View>
   );
@@ -118,18 +135,25 @@ const dynamicStyles = new DynamicStyleSheet({
     color: new DynamicValue('#000000', '#dcdcdc'),
     backgroundColor: new DynamicValue('#ffffff', '#202020'),
     marginTop: 8,
+    paddingTop: 12,
     paddingLeft: 12,
     paddingRight: 12,
+    paddingBottom: 12,
     fontSize: 18,
+    lineHeight: 24,
+    minHeight: 40,
   },
   description: {
     borderWidth: 0,
     color: new DynamicValue('#000000', '#dcdcdc'),
     backgroundColor: new DynamicValue('#ffffff', '#202020'),
     marginTop: 8,
+    paddingTop: 12,
     paddingLeft: 12,
     paddingRight: 12,
+    paddingBottom: 12,
     fontSize: 18,
+    lineHeight: 24,
   },
   error: {
     color: '#dc3545',
