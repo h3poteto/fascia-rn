@@ -70,6 +70,7 @@ const Tasks: React.FC<Props> = ({navigation, dispatch, state}) => {
         options={{
           headerStyle: {backgroundColor: backgroundColor},
           headerTintColor: titleColor,
+          headerBackTitleVisible: false,
           headerBackImage: () => (
             <Icon name="close" size={25} style={headerStyles.close} />
           ),
@@ -81,6 +82,7 @@ const Tasks: React.FC<Props> = ({navigation, dispatch, state}) => {
         options={{
           headerStyle: {backgroundColor: backgroundColor},
           headerTintColor: titleColor,
+          headerBackTitleVisible: false,
           headerBackImage: () => (
             <Icon name="close" size={25} style={headerStyles.close} />
           ),
@@ -110,6 +112,7 @@ const editTaskButtonDynamicStyles = new DynamicStyleSheet({
 const headerDynamicStyles = new DynamicStyleSheet({
   close: {
     color: new DynamicValue('#0069d9', '#0069d9'),
+    marginLeft: 12,
   },
 });
 
