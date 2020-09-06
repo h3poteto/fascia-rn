@@ -8,11 +8,11 @@ export const get = async <T>(
   let options: AxiosRequestConfig = {
     params: params,
   };
-  const cookie = await restoreCookie();
-  if (cookie !== null) {
+  const token = await authorizationToken();
+  if (token !== null) {
     options = Object.assign(options, {
       headers: {
-        Cookie: cookie,
+        Authorization: `Bearer ${token}`,
       },
     });
   }
@@ -25,11 +25,11 @@ export const post = async <T>(
   params = {},
 ): Promise<AxiosResponse<T>> => {
   let options: AxiosRequestConfig = {};
-  const cookie = await restoreCookie();
-  if (cookie !== null) {
+  const token = await authorizationToken();
+  if (token !== null) {
     options = Object.assign(options, {
       headers: {
-        Cookie: cookie,
+        Authorization: `Bearer ${token}`,
       },
     });
   }
@@ -41,11 +41,11 @@ export const patch = async <T>(
   params = {},
 ): Promise<AxiosResponse<T>> => {
   let options: AxiosRequestConfig = {};
-  const cookie = await restoreCookie();
-  if (cookie !== null) {
+  const token = await authorizationToken();
+  if (token !== null) {
     options = Object.assign(options, {
       headers: {
-        Cookie: cookie,
+        Authorization: `Bearer ${token}`,
       },
     });
   }
@@ -57,11 +57,11 @@ export const put = async <T>(
   params = {},
 ): Promise<AxiosResponse<T>> => {
   let options: AxiosRequestConfig = {};
-  const cookie = await restoreCookie();
-  if (cookie !== null) {
+  const token = await authorizationToken();
+  if (token !== null) {
     options = Object.assign(options, {
       headers: {
-        Cookie: cookie,
+        Authorization: `Bearer ${token}`,
       },
     });
   }
@@ -75,33 +75,25 @@ export const del = async <T>(
   let options: AxiosRequestConfig = {
     data: params,
   };
-  const cookie = await restoreCookie();
-  if (cookie !== null) {
+  const token = await authorizationToken();
+  if (token !== null) {
     options = Object.assign(options, {
       headers: {
-        Cookie: cookie,
+        Authorization: `Bearer ${token}`,
       },
     });
   }
   return axios.delete<T>(url, options);
 };
 
-const restoreCookie = async (): Promise<string | null> => {
+const authorizationToken = async (): Promise<string | null> => {
   try {
-    let value = await AsyncStorage.getItem('savedCookies');
-    if (value !== null) {
-      return Promise.resolve(jsonCookiesToCookieString(JSON.parse(value)));
+    let token = await AsyncStorage.getItem('access_token');
+    if (token !== null) {
+      return Promise.resolve(token);
     }
   } catch (error) {
     return Promise.resolve(null);
   }
   return Promise.resolve(null);
-};
-
-const jsonCookiesToCookieString = (json: {[key: string]: any}): string => {
-  let cookiesString = '';
-  for (let [key, value] of Object.entries(json)) {
-    cookiesString += `${key}=${value.value}; `;
-  }
-  return cookiesString;
 };

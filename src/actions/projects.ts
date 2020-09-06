@@ -36,7 +36,10 @@ export const getProjects = (navigation: any) => {
       })
       .catch((err) => {
         switch (err.response.status) {
+          // JWT middleware of Echo return 400 when Authorization header is not provided.
+          // https://echo.labstack.com/middleware/jwt
           case 401:
+          case 400:
             dispatch(clearGetError());
             navigation.navigate('Login');
             return;

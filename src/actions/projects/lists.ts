@@ -48,6 +48,7 @@ export const getLists = (navigation: any, projectID: number) => {
       .catch((err) => {
         switch (err.response.status) {
           case 401:
+          case 400:
             dispatch(clearGetError());
             navigation.navigate('Login');
             return;
