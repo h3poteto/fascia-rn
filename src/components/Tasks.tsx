@@ -1,5 +1,5 @@
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity, Platform} from 'react-native';
 import {createStackNavigator, StackScreenProps} from '@react-navigation/stack';
 import {ThunkDispatch} from 'redux-thunk';
 import {
@@ -112,7 +112,10 @@ const editTaskButtonDynamicStyles = new DynamicStyleSheet({
 const headerDynamicStyles = new DynamicStyleSheet({
   close: {
     color: new DynamicValue('#0069d9', '#0069d9'),
-    marginLeft: 12,
+    marginLeft: Platform.select({
+      ios: 12,
+      android: 0,
+    }),
   },
 });
 
