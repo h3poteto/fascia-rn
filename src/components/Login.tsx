@@ -1,12 +1,11 @@
 import React from 'react';
 // import {Platform} from 'react-native';
-import {WebView} from 'react-native-webview';
+import {WebView, WebViewNavigation} from 'react-native-webview';
 import {
   DrawerScreenProps,
   DrawerNavigationProp,
 } from '@react-navigation/drawer';
-// import CookieManager from '@react-native-community/cookies';
-// import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import {DrawerParam} from '@/navigations/drawer';
 
@@ -25,18 +24,22 @@ const Login: React.FC<Props> = ({navigation}) => {
 
 const handleWebViewNavigationStateChange = async (
   navigation: DrawerNavigationProp<DrawerParam, 'Login'>,
-  newNavState: any,
+  newNavState: WebViewNavigation,
 ) => {
   const {url} = newNavState;
   if (!url) return;
-  if (url.includes('fascia.io/webviews/callback')) {
-    /* if (Platform.OS === 'ios') {
-     *   // For iOS
-     *   // Because WKWebView don't share cookie with other http requests.
-     *   // https://stackoverflow.com/questions/62057393/how-to-keep-last-web-session-active-in-react-native-webview
-     *   const cookies = await CookieManager.getAll(true);
-     *   await AsyncStorage.setItem('savedCookies', JSON.stringify(cookies));
-     * } */
+  if (url.includes('/webviews/callback')) {
+    // https://stackoverflow.com/questions/44038180/react-native-parse-url-to-get-query-variable
+    const regex = /[?&]([^=#]+)=([^&#]*)/g;
+    let params: any = {};
+    let match: any;
+    while ((match = regex.exec(url))) {
+      params[match[1]] = match[2];
+    }
+    if (params['access_token']) {
+      const token: string = params['access_token'];
+      await AsyncStorage.setItem('access_token', token);
+    }
     navigation.navigate('Home', {
       screen: 'Projects',
     });
