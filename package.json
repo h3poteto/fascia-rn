@@ -9,7 +9,9 @@
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "typecheck": "tsc",
-    "typecheck:watch": "tsc --watch"
+    "typecheck:watch": "tsc --watch",
+    "build:android:staging": "cd android && ./gradlew assembleStaging",
+    "build:android:release": "cd android && ./gradlew assembleRelease"
   },
   "dependencies": {
     "@expo/react-native-action-sheet": "^3.8.0",
