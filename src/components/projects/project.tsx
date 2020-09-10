@@ -23,7 +23,7 @@ const item: React.FC<Props> = ({project, open}) => {
     <TouchableOpacity style={styles.item} onPress={onPress}>
       <View style={styles.wrapper}>
         <View style={styles.image}></View>
-        <Text style={styles.title}>{project.title}</Text>
+        <Text numberOfLines={1} style={styles.title}>{project.title}</Text>
       </View>
       <Image
         style={styles.icon}
@@ -43,18 +43,24 @@ const dynamicStyles = new DynamicStyleSheet({
   },
   wrapper: {
     flexDirection: 'row',
+    flex: 1,
+    minWidth: 0,
   },
   image: {
+    flex: 0,
     backgroundColor: '#17a2b8',
     width: 24,
     marginRight: 12,
     borderRadius: 8,
   },
   title: {
+    flex: 1,
+    paddingRight: 8,
     fontSize: 18,
     color: new DynamicValue('#000000', '#f0f0f0'),
   },
   icon: {
+    flex: 0,
     width: 24,
     height: 24,
     marginRight: 12,
