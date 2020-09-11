@@ -39,10 +39,12 @@ const dynamicStyles = new DynamicStyleSheet({
     justifyContent: 'space-between',
   },
   title: {
+    flex: 1,
     fontSize: 18,
     color: new DynamicValue('#000000', '#f0f0f0'),
   },
   icon: {
+    flex: 0,
     marginRight: 12,
     color: new DynamicValue('#5c5c5c', '#9a9a9a'),
   },

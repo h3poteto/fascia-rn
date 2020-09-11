@@ -63,8 +63,9 @@ const task: React.FC<Props> = ({
             width: 24,
             marginRight: 12,
             borderRadius: 20,
+            flex: 0
           }}></View>
-        <Text style={styles.title}>{task.title}</Text>
+        <Text numberOfLines={1} style={styles.title}>{task.title}</Text>
       </View>
       <Icon name="bars" size={25} style={styles.icon} />
     </TouchableOpacity>
@@ -82,12 +83,17 @@ const dynamicStyles = new DynamicStyleSheet({
   },
   wrapper: {
     flexDirection: 'row',
+    flex: 1,
+    minWidth: 0
   },
   title: {
+    flex: 1,
     fontSize: 18,
+    paddingRight: 8,
     color: new DynamicValue('#000000', '#f0f0f0'),
   },
   icon: {
+    flex: 0,
     width: 24,
     height: 24,
     marginRight: 12,
