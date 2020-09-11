@@ -1,6 +1,6 @@
 [![CircleCI](https://img.shields.io/circleci/build/github/h3poteto/fascia-rn/master?style=flat-square&token=1daae29740af38d98614eed5caf889dba5b8fc3e)](https://circleci.com/gh/h3poteto/fascia-rn)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/h3poteto/fascia-rn?style=flat-square)](https://github.com/h3poteto/fascia-rn/releases)
-[![Dependabot](https://img.shields.io/badge/Dependabot-enabled-blue.svg)](https://dependabot.com)
+[![Dependabot](https://img.shields.io/badge/Dependabot-enabled-blue.svg?style=flat-square)](https://dependabot.com)
 
 # fascia
 This application is an iOS/Android application to use fascia. Fascia is a simple task management web service: https://fascia.io
