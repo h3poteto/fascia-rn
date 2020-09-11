@@ -1,4 +1,4 @@
-package com.fascia;
+package io.fascia;
 
 import com.facebook.react.ReactActivity;
 
