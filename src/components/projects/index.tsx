@@ -8,6 +8,8 @@ import {
 } from 'react-native-dynamic';
 import {StackScreenProps} from '@react-navigation/stack';
 import DropdownAlert from 'react-native-dropdownalert';
+import ActionButton from 'react-native-action-button';
+
 
 import Actions, {getProjects, clearGetError} from '@/actions/projects';
 import {State as ProjectsState} from '@/reducers/projects';
@@ -64,6 +66,12 @@ const index: React.FC<Props> = ({dispatch, projects, navigation}) => {
     });
   };
 
+  const openNew = () => {
+    return navigation.navigate('Projects', {
+      screen: 'New'
+    })
+  }
+
   const styles = useDynamicValue(dynamicStyles);
   return (
     <View style={styles.container}>
@@ -75,6 +83,10 @@ const index: React.FC<Props> = ({dispatch, projects, navigation}) => {
         refreshControl={
           <RefreshControl refreshing={projects.loading} onRefresh={onRefresh} />
         }></FlatList>
+      <ActionButton
+        buttonColor="#0069d9"
+        onPress={() => { openNew() }}
+      />
       <DropdownAlert ref={(ref) => (dropdown.current = ref)} />
     </View>
   );

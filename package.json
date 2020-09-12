@@ -24,6 +24,7 @@
     "react": "16.13.1",
     "react-hook-form": "6.7.2",
     "react-native": "0.63.2",
+    "react-native-action-button": "^2.8.5",
     "react-native-dropdownalert": "^4.3.0",
     "react-native-dynamic": "^1.0.0",
     "react-native-gesture-handler": "^1.7.0",
