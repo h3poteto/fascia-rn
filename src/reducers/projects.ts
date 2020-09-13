@@ -6,6 +6,12 @@ import Actions, {
   ErrorGetProjects,
   ClearGetError,
 } from '@/actions/projects';
+import NewActions, {
+  RequestCreateProject,
+  ReceiveCreateProject,
+  ErrorCreateProject,
+  ClearCreateError,
+} from '@/actions/projects/new';
 import {Project} from '@/entities/project';
 
 export type State = {
@@ -20,15 +26,20 @@ const initState: State = {
   projects: [],
 };
 
-const reducer: Reducer<State, Actions> = (
+const reducer: Reducer<State, Actions | NewActions> = (
   state: State = initState,
-  action: Actions,
+  action: Actions | NewActions,
 ): State => {
   switch (action.type) {
     case RequestGetProjects:
       return {
         ...state,
         loading: true,
+      };
+    case RequestCreateProject:
+      return {
+        ...state,
+        errors: null,
       };
     case ReceiveGetProjects:
       return {
@@ -37,13 +48,20 @@ const reducer: Reducer<State, Actions> = (
         errors: null,
         projects: action.payload,
       };
+    case ReceiveCreateProject:
+      return {
+        ...state,
+        errors: null,
+      };
     case ErrorGetProjects:
+    case ErrorCreateProject:
       return {
         ...state,
         loading: false,
         errors: action.payload,
       };
     case ClearGetError:
+    case ClearCreateError:
       return {
         ...state,
         loading: false,
