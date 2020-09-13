@@ -10,8 +10,11 @@ import {StackScreenProps} from '@react-navigation/stack';
 import DropdownAlert from 'react-native-dropdownalert';
 import ActionButton from 'react-native-action-button';
 
-
-import Actions, {getProjects, clearGetError} from '@/actions/projects';
+import Actions, {
+  getProjects,
+  clearGetError,
+  getRepositories,
+} from '@/actions/projects';
 import {State as ProjectsState} from '@/reducers/projects';
 import listSeparator from '@/components/atoms/listSeparator';
 import Item from './project';
@@ -29,6 +32,7 @@ const index: React.FC<Props> = ({dispatch, projects, navigation}) => {
 
   useEffect(() => {
     dispatch(getProjects(navigation));
+    dispatch(getRepositories());
   }, [inputRef]);
 
   useEffect(() => {
@@ -68,9 +72,9 @@ const index: React.FC<Props> = ({dispatch, projects, navigation}) => {
 
   const openNew = () => {
     return navigation.navigate('Projects', {
-      screen: 'New'
-    })
-  }
+      screen: 'New',
+    });
+  };
 
   const styles = useDynamicValue(dynamicStyles);
   return (
@@ -85,7 +89,9 @@ const index: React.FC<Props> = ({dispatch, projects, navigation}) => {
         }></FlatList>
       <ActionButton
         buttonColor="#0069d9"
-        onPress={() => { openNew() }}
+        onPress={() => {
+          openNew();
+        }}
       />
       <DropdownAlert ref={(ref) => (dropdown.current = ref)} />
     </View>

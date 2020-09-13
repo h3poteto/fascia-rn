@@ -20,10 +20,12 @@ import DropdownAlert from 'react-native-dropdownalert';
 import {ProjectsParam} from '@/navigations/projects';
 import {CreateProjectParams} from '@/apiClient';
 import Actions, {createProject, clearCreateError} from '@/actions/projects/new';
+import {Repository} from '@/entities/repository';
 
 type Props = StackScreenProps<ProjectsParam, 'New'> & {
   dispatch: ThunkDispatch<any, any, Actions>;
   error: Error | null;
+  repositories: Array<Repository>;
 };
 
 const New: React.FC<Props> = ({navigation, dispatch, error}) => {

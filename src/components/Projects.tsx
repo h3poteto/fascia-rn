@@ -53,7 +53,14 @@ const Projects: React.FC<Props> = ({dispatch, state}) => {
             <Icon name="close" size={25} style={headerStyles.close} />
           ),
         }}>
-        {(props) => <New {...props} dispatch={dispatch} error={state.errors} />}
+        {(props) => (
+          <New
+            {...props}
+            dispatch={dispatch}
+            error={state.errors}
+            repositories={state.repositories}
+          />
+        )}
       </Stack.Screen>
     </Stack.Navigator>
   );
