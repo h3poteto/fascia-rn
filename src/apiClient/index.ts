@@ -20,6 +20,20 @@ export const GetProjects = async (): Promise<Array<Project>> => {
   });
 };
 
+export type CreateProjectParams = {
+  title: string;
+  description: string;
+  repository_id?: number;
+};
+
+export const CreateProject = async (
+  params: CreateProjectParams,
+): Promise<Project> => {
+  return post<ServerProject>(`${BaseURL}/api/projects`, params).then((res) => {
+    return projectConverter(res.data);
+  });
+};
+
 export const GetLists = async (
   projectID: number,
 ): Promise<{lists: Array<List>; none: List}> => {

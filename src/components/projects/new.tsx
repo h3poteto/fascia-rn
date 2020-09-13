@@ -14,24 +14,25 @@ import {
   useDynamicValue,
 } from 'react-native-dynamic';
 import {StackScreenProps} from '@react-navigation/stack';
-
-import {ProjectsParam} from '@/navigations/projects';
 import {useForm, Controller} from 'react-hook-form';
 
+import {ProjectsParam} from '@/navigations/projects';
+import {CreateProjectParams} from '@/apiClient';
+import Actions, {createProject} from '@/actions/projects/new';
+
 type Props = StackScreenProps<ProjectsParam, 'New'> & {
-  dispatch: ThunkDispatch<any, any, any>;
+  dispatch: ThunkDispatch<any, any, Actions>;
 };
 
-type FormData = {
-  title: string;
-  description: string;
-  repository_id?: number;
-};
-
-const New: React.FC<Props> = ({navigation}) => {
-  const {control, handleSubmit, errors} = useForm<FormData>();
+const New: React.FC<Props> = ({navigation, dispatch}) => {
+  const {control, handleSubmit, errors} = useForm<CreateProjectParams>();
   const onSubmit = handleSubmit(({title, description}) => {
-    console.log(title, description);
+    dispatch(
+      createProject(navigation, {
+        title,
+        description,
+      }),
+    );
   });
 
   if (Platform.OS === 'ios') {
