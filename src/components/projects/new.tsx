@@ -1,4 +1,4 @@
-import React, {useLayoutEffect} from 'react';
+import React, {useLayoutEffect, useEffect, useRef} from 'react';
 import {
   View,
   ScrollView,
@@ -15,16 +15,18 @@ import {
 } from 'react-native-dynamic';
 import {StackScreenProps} from '@react-navigation/stack';
 import {useForm, Controller} from 'react-hook-form';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import {ProjectsParam} from '@/navigations/projects';
 import {CreateProjectParams} from '@/apiClient';
-import Actions, {createProject} from '@/actions/projects/new';
+import Actions, {createProject, clearCreateError} from '@/actions/projects/new';
 
 type Props = StackScreenProps<ProjectsParam, 'New'> & {
   dispatch: ThunkDispatch<any, any, Actions>;
+  error: Error | null;
 };
 
-const New: React.FC<Props> = ({navigation, dispatch}) => {
+const New: React.FC<Props> = ({navigation, dispatch, error}) => {
   const {control, handleSubmit, errors} = useForm<CreateProjectParams>();
   const onSubmit = handleSubmit(({title, description}) => {
     dispatch(
@@ -34,6 +36,15 @@ const New: React.FC<Props> = ({navigation, dispatch}) => {
       }),
     );
   });
+
+  let dropdown = useRef<DropdownAlert | null>();
+
+  useEffect(() => {
+    if (error) {
+      dropdown.current?.alertWithType('error', 'Error', error.toString());
+      dispatch(clearCreateError());
+    }
+  }, [error]);
 
   if (Platform.OS === 'ios') {
     useLayoutEffect(() => {
