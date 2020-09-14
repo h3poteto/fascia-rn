@@ -38,9 +38,16 @@ export type CreateProjectParams = {
 export const CreateProject = async (
   params: CreateProjectParams,
 ): Promise<Project> => {
-  return post<ServerProject>(`${BaseURL}/api/projects`, params).then((res) => {
-    return projectConverter(res.data);
-  });
+  const castedParams = {
+    title: params.title,
+    description: params.description,
+    repository_id: params.repository_id?.toString(10),
+  };
+  return post<ServerProject>(`${BaseURL}/api/projects`, castedParams).then(
+    (res) => {
+      return projectConverter(res.data);
+    },
+  );
 };
 
 export const GetLists = async (
