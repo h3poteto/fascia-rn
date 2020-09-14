@@ -1,11 +1,14 @@
 import {Dispatch, Action} from 'redux';
-import {GetProjects} from '@/apiClient';
+import {GetProjects, GetRepositories} from '@/apiClient';
 import {Project} from '@/entities/project';
+import {Repository} from '~src/entities/repository';
 
 export const RequestGetProjects = 'RequestGetProjects' as const;
 export const ReceiveGetProjects = 'ReceiveGetProjects' as const;
 export const ErrorGetProjects = 'ErrorGetProjects' as const;
 export const ClearGetError = 'ClearGetError' as const;
+export const RequestGetRepositories = 'RequestGetRepositories' as const;
+export const ReceiveGetRepositories = 'ReceiveGetRepositories' as const;
 
 export const requestGetProjects = () => ({
   type: RequestGetProjects,
@@ -51,11 +54,31 @@ export const getProjects = (navigation: any) => {
   };
 };
 
+export const requestGetRepositories = () => ({
+  type: RequestGetRepositories,
+});
+
+export const receiveGetRepositories = (repositories: Array<Repository>) => ({
+  type: ReceiveGetRepositories,
+  payload: repositories,
+});
+
+export const getRepositories = () => {
+  return async (dispatch: Dispatch<Action>) => {
+    dispatch(requestGetRepositories());
+    return GetRepositories().then((repositories) => {
+      dispatch(receiveGetRepositories(repositories));
+    });
+  };
+};
+
 type Actions = ReturnType<
   | typeof requestGetProjects
   | typeof receiveGetProjects
   | typeof errorGetProjects
   | typeof clearGetError
+  | typeof requestGetRepositories
+  | typeof receiveGetRepositories
 >;
 
 export default Actions;

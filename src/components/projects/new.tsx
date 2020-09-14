@@ -16,23 +16,27 @@ import {
 import {StackScreenProps} from '@react-navigation/stack';
 import {useForm, Controller} from 'react-hook-form';
 import DropdownAlert from 'react-native-dropdownalert';
+import RNPickerSelect from 'react-native-picker-select';
 
 import {ProjectsParam} from '@/navigations/projects';
 import {CreateProjectParams} from '@/apiClient';
 import Actions, {createProject, clearCreateError} from '@/actions/projects/new';
+import {Repository} from '@/entities/repository';
 
 type Props = StackScreenProps<ProjectsParam, 'New'> & {
   dispatch: ThunkDispatch<any, any, Actions>;
   error: Error | null;
+  repositories: Array<Repository>;
 };
 
-const New: React.FC<Props> = ({navigation, dispatch, error}) => {
+const New: React.FC<Props> = ({navigation, dispatch, error, repositories}) => {
   const {control, handleSubmit, errors} = useForm<CreateProjectParams>();
-  const onSubmit = handleSubmit(({title, description}) => {
+  const onSubmit = handleSubmit(({title, description, repository_id}) => {
     dispatch(
       createProject(navigation, {
         title,
         description,
+        repository_id,
       }),
     );
   });
@@ -55,6 +59,7 @@ const New: React.FC<Props> = ({navigation, dispatch, error}) => {
   }
 
   const styles = useDynamicValue(dynamicStyles);
+  const picker = useDynamicValue(pickerSelectStyles);
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scroll}>
@@ -91,12 +96,31 @@ const New: React.FC<Props> = ({navigation, dispatch, error}) => {
           name="description"
           defaultValue=""
         />
+        <Text style={styles.label}>Repository</Text>
+        <Controller
+          control={control}
+          render={({onChange, onBlur, value}) => (
+            <RNPickerSelect
+              onValueChange={(value) => onChange(value)}
+              value={value}
+              style={picker}
+              onClose={onBlur}
+              items={repositories.map(({id, full_name}) => ({
+                label: full_name,
+                value: id,
+              }))}
+            />
+          )}
+          name="repository_id"
+          defaultValue=""
+        />
       </ScrollView>
       {Platform.OS != 'ios' && (
         <View style={styles.submit}>
           <Button title="Submit" color="#0069d9" onPress={onSubmit} />
         </View>
       )}
+      <DropdownAlert ref={(ref) => (dropdown.current = ref)} />
     </View>
   );
 };
@@ -151,6 +175,31 @@ const dynamicStyles = new DynamicStyleSheet({
     position: 'absolute',
     height: 36,
     bottom: 0,
+  },
+});
+
+const pickerSelectStyles = new DynamicStyleSheet({
+  inputIOS: {
+    fontSize: 16,
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 4,
+    paddingRight: 30, // to ensure the text is never behind the icon
+    color: new DynamicValue('#000000', '#dcdcdc'),
+    backgroundColor: new DynamicValue('#ffffff', '#202020'),
+  },
+  inputAndroid: {
+    marginTop: 8,
+    paddingTop: 12,
+    paddingLeft: 12,
+    paddingRight: 12,
+    paddingBottom: 12,
+    fontSize: 18,
+    lineHeight: 24,
+    color: new DynamicValue('#000000', '#dcdcdc'),
+    backgroundColor: new DynamicValue('#ffffff', '#202020'),
   },
 });
 

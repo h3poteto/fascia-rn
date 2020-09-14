@@ -7,6 +7,7 @@ import {
 } from '@/entities/project';
 import {List, Lists, converter as listConverter} from '@/entities/list';
 import {Task, ServerTask, converter as taskConverter} from '@/entities/task';
+import {Repository} from '@/entities/repository';
 
 const BaseURL = 'https://fascia.io';
 
@@ -20,6 +21,14 @@ export const GetProjects = async (): Promise<Array<Project>> => {
   });
 };
 
+export const GetRepositories = async (): Promise<Array<Repository>> => {
+  return get<Array<Repository>>(`${BaseURL}/api/github/repositories`).then(
+    (res) => {
+      return res.data;
+    },
+  );
+};
+
 export type CreateProjectParams = {
   title: string;
   description: string;
@@ -29,9 +38,16 @@ export type CreateProjectParams = {
 export const CreateProject = async (
   params: CreateProjectParams,
 ): Promise<Project> => {
-  return post<ServerProject>(`${BaseURL}/api/projects`, params).then((res) => {
-    return projectConverter(res.data);
-  });
+  const castedParams = {
+    title: params.title,
+    description: params.description,
+    repository_id: params.repository_id?.toString(10),
+  };
+  return post<ServerProject>(`${BaseURL}/api/projects`, castedParams).then(
+    (res) => {
+      return projectConverter(res.data);
+    },
+  );
 };
 
 export const GetLists = async (
