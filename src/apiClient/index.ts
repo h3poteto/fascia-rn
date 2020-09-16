@@ -5,7 +5,12 @@ import {
   Project,
   converter as projectConverter,
 } from '@/entities/project';
-import {List, Lists, converter as listConverter} from '@/entities/list';
+import {
+  List,
+  ServerList,
+  Lists,
+  converter as listConverter,
+} from '@/entities/list';
 import {Task, ServerTask, converter as taskConverter} from '@/entities/task';
 import {Repository} from '@/entities/repository';
 
@@ -60,6 +65,25 @@ export const GetLists = async (
       return {lists: data, none: none};
     },
   );
+};
+
+export type CreateListParams = {
+  title: string;
+  color: string;
+};
+
+export const CreateList = async (
+  projectID: number,
+  params: CreateListParams,
+): Promise<List> => {
+  const castedParams = {
+    title: params.title,
+    color: params.color.slice(1),
+  };
+  return post<ServerList>(
+    `${BaseURL}/api/projects/${projectID}/lists`,
+    castedParams,
+  ).then((res) => listConverter(res.data));
 };
 
 export const MoveTask = async (

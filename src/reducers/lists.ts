@@ -9,6 +9,12 @@ import Actions, {
   RequestHideList,
   RequestDisplayList,
 } from '@/actions/projects/lists';
+import NewActions, {
+  RequestCreateList,
+  ReceiveCreateList,
+  ErrorCreateList,
+  ClearCreateError,
+} from '@/actions/projects/lists/new';
 import {List} from '@/entities/list';
 
 export type State = {
@@ -25,9 +31,9 @@ const initState: State = {
   noneList: null,
 };
 
-const reducer: Reducer<State, Actions> = (
+const reducer: Reducer<State, Actions | NewActions> = (
   state: State = initState,
-  action: Actions,
+  action: Actions | NewActions,
 ): State => {
   switch (action.type) {
     case RequestGetLists:
@@ -38,6 +44,11 @@ const reducer: Reducer<State, Actions> = (
         ...state,
         loading: true,
       };
+    case RequestCreateList:
+      return {
+        ...state,
+        errors: null,
+      };
     case ReceiveGetLists:
       return {
         ...state,
@@ -45,13 +56,20 @@ const reducer: Reducer<State, Actions> = (
         errors: null,
         lists: action.payload,
       };
+    case ReceiveCreateList:
+      return {
+        ...state,
+        errors: null,
+      };
     case ErrorGetLists:
+    case ErrorCreateList:
       return {
         ...state,
         loading: false,
         errors: action.payload,
       };
     case ClearGetError:
+    case ClearCreateError:
       return {
         ...state,
         loading: false,

@@ -16,6 +16,7 @@ import {
 import Icon from 'react-native-vector-icons/AntDesign';
 import DropdownAlert from 'react-native-dropdownalert';
 import {useActionSheet} from '@expo/react-native-action-sheet';
+import ActionButton from 'react-native-action-button';
 
 import {ListsParam} from '@/navigations/lists';
 import {HomeParam} from '@/navigations/home';
@@ -155,7 +156,16 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
     };
   });
 
-  const openNew = (list: List) => {
+  const openNewList = () => {
+    navigation.navigate('Lists', {
+      screen: 'New',
+      params: {
+        projectID: projectID,
+      },
+    });
+  };
+
+  const openNewTask = (list: List) => {
     navigation.navigate('Tasks', {
       screen: 'New',
       params: {
@@ -186,7 +196,7 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
             return (
               <TouchableOpacity
                 style={styles.new}
-                onPress={() => openNew(section.list)}>
+                onPress={() => openNewTask(section.list)}>
                 <Icon name="plus" size={25} style={styles.plus} />
               </TouchableOpacity>
             );
@@ -208,6 +218,12 @@ const index: React.FC<Props> = ({navigation, route, dispatch, lists}) => {
         refreshControl={
           <RefreshControl refreshing={lists.loading} onRefresh={onRefresh} />
         }></SectionList>
+      <ActionButton
+        buttonColor="#0069d9"
+        onPress={() => {
+          openNewList();
+        }}
+      />
       <DropdownAlert ref={(ref) => (dropdown.current = ref)} />
     </View>
   );
