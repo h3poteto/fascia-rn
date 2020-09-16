@@ -1,4 +1,4 @@
-import React, {useLayoutEffect, useState} from 'react';
+import React, {useLayoutEffect, useState, useRef, useEffect} from 'react';
 import {
   View,
   ScrollView,
@@ -18,20 +18,22 @@ import {useForm, Controller} from 'react-hook-form';
 import {ThunkDispatch} from 'redux-thunk';
 import Modal from 'react-native-modal';
 import {TriangleColorPicker, fromHsv} from 'react-native-color-picker';
+import DropdownAlert from 'react-native-dropdownalert';
 
 import {ListsParam} from '@/navigations/lists';
 import ColorButton from '@/components/atoms/colorButton';
+import {CreateListParams} from '@/apiClient';
+import Actions, {
+  createList,
+  clearCreateError,
+} from '@/actions/projects/lists/new';
 
 type Props = StackScreenProps<ListsParam, 'New'> & {
-  dispatch: ThunkDispatch<any, any, any>;
+  dispatch: ThunkDispatch<any, any, Actions>;
+  error: Error | null;
 };
 
-type CreateListParams = {
-  title: string;
-  color: string;
-};
-
-const New: React.FC<Props> = ({navigation}) => {
+const New: React.FC<Props> = ({navigation, route, dispatch, error}) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [color, setColor] = useState<string>('#008ed4');
 
@@ -41,8 +43,23 @@ const New: React.FC<Props> = ({navigation}) => {
 
   const {control, handleSubmit, errors} = useForm<CreateListParams>();
   const onSubmit = handleSubmit(({title}) => {
-    console.log(title, color);
+    const {projectID} = route.params;
+    dispatch(
+      createList(navigation, projectID, {
+        title,
+        color,
+      }),
+    );
   });
+
+  let dropdown = useRef<DropdownAlert | null>();
+
+  useEffect(() => {
+    if (error) {
+      dropdown.current?.alertWithType('error', 'Error', error.toString());
+      dispatch(clearCreateError());
+    }
+  }, [error]);
 
   if (Platform.OS === 'ios') {
     useLayoutEffect(() => {
@@ -97,6 +114,7 @@ const New: React.FC<Props> = ({navigation}) => {
           <Button title="Submit" color="#0069d9" onPress={onSubmit} />
         </View>
       )}
+      <DropdownAlert ref={(ref) => (dropdown.current = ref)} />
     </View>
   );
 };

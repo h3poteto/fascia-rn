@@ -54,7 +54,7 @@ const Lists: React.FC<Props> = ({state, dispatch}) => {
             <Icon name="close" size={25} style={headerStyles.close} />
           ),
         })}>
-        {(props) => <New {...props} dispatch={dispatch} />}
+        {(props) => <New {...props} dispatch={dispatch} error={state.errors} />}
       </ListsStack.Screen>
     </ListsStack.Navigator>
   );
