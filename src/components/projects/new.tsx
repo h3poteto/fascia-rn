@@ -180,13 +180,13 @@ const dynamicStyles = new DynamicStyleSheet({
 
 const pickerSelectStyles = new DynamicStyleSheet({
   inputIOS: {
-    fontSize: 16,
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 4,
-    paddingRight: 30, // to ensure the text is never behind the icon
+    marginTop: 8,
+    paddingTop: 12,
+    paddingLeft: 12,
+    paddingRight: 12,
+    paddingBottom: 12,
+    fontSize: 18,
+    lineHeight: 24,
     color: new DynamicValue('#000000', '#dcdcdc'),
     backgroundColor: new DynamicValue('#ffffff', '#202020'),
   },
