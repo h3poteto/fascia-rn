@@ -38,6 +38,7 @@ const index: React.FC<Props> = ({dispatch, projects, navigation}) => {
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       dispatch(getProjects(navigation));
+      dispatch(getRepositories());
     });
 
     return unsubscribe;
@@ -58,6 +59,7 @@ const index: React.FC<Props> = ({dispatch, projects, navigation}) => {
 
   const onRefresh = () => {
     dispatch(getProjects(navigation));
+    dispatch(getRepositories());
   };
 
   const openLists = (params: {projectID: number; title: string}) => {
