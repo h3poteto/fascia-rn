@@ -46,9 +46,9 @@ const Projects: React.FC<Props> = ({dispatch, state}) => {
       <Stack.Screen
         name="New"
         options={{
-          title: 'New',
           headerStyle: {backgroundColor: backgroundColor},
           headerTintColor: titleColor,
+          headerBackTitleVisible: false,
           headerBackImage: () => (
             <Icon name="close" size={25} style={headerStyles.close} />
           ),
