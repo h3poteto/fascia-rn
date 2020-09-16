@@ -1,4 +1,4 @@
-import React, {useLayoutEffect} from 'react';
+import React, {useLayoutEffect, useState} from 'react';
 import {
   View,
   ScrollView,
@@ -6,6 +6,7 @@ import {
   TextInput,
   Platform,
   Button,
+  TouchableOpacity,
 } from 'react-native';
 import {StackScreenProps} from '@react-navigation/stack';
 import {
@@ -15,8 +16,11 @@ import {
 } from 'react-native-dynamic';
 import {useForm, Controller} from 'react-hook-form';
 import {ThunkDispatch} from 'redux-thunk';
+import Modal from 'react-native-modal';
+import {TriangleColorPicker, fromHsv} from 'react-native-color-picker';
 
 import {ListsParam} from '@/navigations/lists';
+import ColorButton from '@/components/atoms/colorButton';
 
 type Props = StackScreenProps<ListsParam, 'New'> & {
   dispatch: ThunkDispatch<any, any, any>;
@@ -28,8 +32,15 @@ type CreateListParams = {
 };
 
 const New: React.FC<Props> = ({navigation}) => {
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [color, setColor] = useState<string>('#008ed4');
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
   const {control, handleSubmit, errors} = useForm<CreateListParams>();
-  const onSubmit = handleSubmit(({title, color}) => {
+  const onSubmit = handleSubmit(({title}) => {
     console.log(title, color);
   });
 
@@ -63,7 +74,24 @@ const New: React.FC<Props> = ({navigation}) => {
           defaultValue=""
         />
         {errors.title && <Text style={styles.error}>Title is required.</Text>}
+
+        <Text style={styles.label}>Color</Text>
+        <TouchableOpacity onPress={toggleModal}>
+          <ColorButton color={color} />
+        </TouchableOpacity>
       </ScrollView>
+      <Modal isVisible={isModalVisible}>
+        <View style={styles.modal}>
+          <TriangleColorPicker
+            defaultColor={color}
+            onColorChange={(color) => setColor(fromHsv(color))}
+            style={{flex: 1}}
+            hideControls={true}
+          />
+
+          <Button title="Done" onPress={toggleModal} color={color} />
+        </View>
+      </Modal>
       {Platform.OS != 'ios' && (
         <View style={styles.submit}>
           <Button title="Submit" color="#0069d9" onPress={onSubmit} />
@@ -123,6 +151,10 @@ const dynamicStyles = new DynamicStyleSheet({
     position: 'absolute',
     height: 36,
     bottom: 0,
+  },
+  modal: {
+    flex: 1,
+    backgroundColor: new DynamicValue('#f0f0f0', '#000000'),
   },
 });
 
