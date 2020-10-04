@@ -11,7 +11,7 @@
     "typecheck": "tsc",
     "typecheck:watch": "tsc --watch",
     "build:android:staging": "cd android && ./gradlew assembleStaging",
-    "build:android:release": "cd android && ./gradlew assembleRelease"
+    "build:android:release": "cd android && ./gradlew bundleRelease"
   },
   "dependencies": {
     "@expo/react-native-action-sheet": "^3.8.0",
