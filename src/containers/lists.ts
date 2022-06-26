@@ -2,7 +2,7 @@ import {connect} from 'react-redux';
 
 import {RootStore} from '@/reducers';
 import {State as ListsState} from '@/reducers/lists';
-import lists from '@/components/Lists.tsx';
+import lists from '@/components/Lists';
 
 const mapStateToProps = (state: RootStore): {state: ListsState} => {
   return {

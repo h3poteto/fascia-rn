@@ -3,7 +3,7 @@ import ShowActions, {
   ReceiveGetTask,
   ErrorGetTask,
   ClearGetError,
-} from '@/actions/projects/tasks/show.ts';
+} from '@/actions/projects/tasks/show';
 import EditActions, {
   RequestUpdateTask,
   ReceiveUpdateTask,
