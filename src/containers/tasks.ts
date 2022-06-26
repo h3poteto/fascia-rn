@@ -2,7 +2,7 @@ import {connect} from 'react-redux';
 
 import {RootStore} from '@/reducers';
 import {State as TasksState} from '@/reducers/tasks';
-import tasks from '@/components/Tasks.tsx';
+import tasks from '@/components/Tasks';
 
 const mapStateToProps = (state: RootStore): {state: TasksState} => {
   return {

@@ -2,7 +2,7 @@ import {connect} from 'react-redux';
 
 import {RootStore} from '@/reducers';
 import {State as HomeState} from '@/reducers/home';
-import home from '@/components/Home.tsx';
+import home from '@/components/Home';
 
 const mapStateToProps = (state: RootStore): {state: HomeState} => {
   return {
