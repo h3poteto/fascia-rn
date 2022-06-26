@@ -1,0 +1,21 @@
+name: Build
+on:
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: reactnativecommunity/react-native-android
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+
+      - name: yarn install
+        run: yarn install
+
+      - name: typecheck
+        run: yarn run typecheck
+
+      - name: Build Android Staging
+        working-directory: ./android
+        run: ./gradlew assembleStaging
