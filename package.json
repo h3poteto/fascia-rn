@@ -24,7 +24,7 @@
     "axios": "^0.21.2",
     "react": "^17.0.2",
     "react-hook-form": "^6.15.8",
-    "react-native": "0.65.2",
+    "react-native": "0.68.2",
     "react-native-action-button": "^2.8.5",
     "react-native-color-picker": "^0.6.0",
     "react-native-dropdownalert": "^4.3.0",
