@@ -1597,10 +1597,10 @@
   dependencies:
     "@types/hammerjs" "^2.0.36"
 
-"@expo/react-native-action-sheet@^3.8.0":
-  version "3.8.0"
-  resolved "https://registry.yarnpkg.com/@expo/react-native-action-sheet/-/react-native-action-sheet-3.8.0.tgz#0db8b70ea8550ceb2983abda8584efa3a61d7389"
-  integrity sha512-tCfwysuqy0sfaN+aA98IKUrwCLKsbDHSYLcnHrx9wNbawOHNez8rSeFtieAS48/HyrPI75yg/ZGvxe6UsJRS8Q==
+"@expo/react-native-action-sheet@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@expo/react-native-action-sheet/-/react-native-action-sheet-4.0.0.tgz#d51475ebe6ea29b78aeecd699519c9ae0e1fcc9d"
+  integrity sha512-y+w5BpkEN7SZ/+cZN5lOJlOsatO9TIfwlJRB1iq33ateAU5uVrN4yRGPPDDrX3q8hpGky5hXplJ5I+GFM4DqlQ==
   dependencies:
     "@types/hoist-non-react-statics" "^3.3.1"
     hoist-non-react-statics "^3.3.0"
